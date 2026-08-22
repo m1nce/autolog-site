@@ -7,6 +7,7 @@ import heroLive from "../assets/screens/hero-live.webp";
 import surfaceLive from "../assets/screens/surface-live.webp";
 import surfaceTrips from "../assets/screens/surface-trips.webp";
 import surfaceRoads from "../assets/screens/surface-roads.webp";
+import surfaceStats from "../assets/screens/surface-stats.webp";
 import surfaceGarage from "../assets/screens/surface-garage.webp";
 
 const [tickStart, tickBestMile, tickEnd] = route.ticks;
@@ -79,6 +80,13 @@ const [tickStart, tickBestMile, tickEnd] = route.ticks;
     <p class="telemetry-strip microlabel">RPM &middot; SPEED &middot; MPG &middot; COOLANT</p>
   </section>
 
+  <section class="interstitial">
+    <div class="wrap interstitial-copy">
+      <h2 class="interstitial-heading">5 tabs, infinite possibilities.</h2>
+      <p class="interstitial-sub">Discover your driving personality and your car's personality.</p>
+    </div>
+  </section>
+
   <section class="surfaces">
     <!-- Pinned-device scrollytelling block (Amendment 2026-08-22). JS adds
          .scrolly-active to <html> only when motion is allowed and
@@ -113,6 +121,14 @@ const [tickStart, tickBestMile, tickEnd] = route.ticks;
           />
           <img
             class="scrolly-screen"
+            data-surface="stats"
+            src={surfaceStats.src}
+            width={surfaceStats.width}
+            height={surfaceStats.height}
+            alt=""
+          />
+          <img
+            class="scrolly-screen"
             data-surface="garage"
             src={surfaceGarage.src}
             width={surfaceGarage.width}
@@ -120,17 +136,19 @@ const [tickStart, tickBestMile, tickEnd] = route.ticks;
             alt=""
           />
         </div>
-        <div class="scrolly-rail" aria-hidden="true">
+        <div class="scrolly-rail">
           <div class="rail-labels">
-            <span class="rail-item is-active" data-surface="live">LIVE</span>
-            <span class="rail-dot">&middot;</span>
-            <span class="rail-item" data-surface="trips">TRIPS</span>
-            <span class="rail-dot">&middot;</span>
-            <span class="rail-item" data-surface="roads">ROADS</span>
-            <span class="rail-dot">&middot;</span>
-            <span class="rail-item" data-surface="garage">GARAGE</span>
+            <button type="button" class="rail-item is-active" data-surface="live">LIVE</button>
+            <span class="rail-dot" aria-hidden="true">&middot;</span>
+            <button type="button" class="rail-item" data-surface="trips">TRIPS</button>
+            <span class="rail-dot" aria-hidden="true">&middot;</span>
+            <button type="button" class="rail-item" data-surface="roads">ROADS</button>
+            <span class="rail-dot" aria-hidden="true">&middot;</span>
+            <button type="button" class="rail-item" data-surface="stats">STATS</button>
+            <span class="rail-dot" aria-hidden="true">&middot;</span>
+            <button type="button" class="rail-item" data-surface="garage">GARAGE</button>
           </div>
-          <div class="rail-track"><span class="rail-marker"></span></div>
+          <div class="rail-track" aria-hidden="true"><span class="rail-marker"></span></div>
         </div>
       </div>
 
@@ -159,6 +177,14 @@ const [tickStart, tickBestMile, tickEnd] = route.ticks;
           <p class="body">
             Every road you have driven, matched to the map and kept by name.
             Roads counts miles known, never a percent of anything.
+          </p>
+        </div>
+        <div class="scrolly-block" data-surface="stats">
+          <p class="eyebrow microlabel">STATS</p>
+          <h2>Every number earns its tile.</h2>
+          <p class="body">
+            Longest haul, best tank, total climb. The Measured Wall collects
+            records as they happen and never rounds in your favor.
           </p>
         </div>
         <div class="scrolly-block" data-surface="garage">
@@ -234,6 +260,27 @@ const [tickStart, tickBestMile, tickEnd] = route.ticks;
             width={surfaceRoads.width}
             height={surfaceRoads.height}
             alt="AutoLog Roads screen showing known roads lit against a dark map"
+            loading="lazy"
+          />
+        </div>
+      </div>
+
+      <div class="surface-row">
+        <div class="surface-copy">
+          <p class="eyebrow microlabel">STATS</p>
+          <h2>Every number earns its tile.</h2>
+          <p class="body">
+            Longest haul, best tank, total climb. The Measured Wall collects
+            records as they happen and never rounds in your favor.
+          </p>
+        </div>
+        <div class="surface-device">
+          <!-- real simulator capture, seeded showcase store (2026-08-22) -->
+          <img
+            src={surfaceStats.src}
+            width={surfaceStats.width}
+            height={surfaceStats.height}
+            alt="AutoLog Stats screen: the Measured Wall, RPM histogram and lifetime records"
             loading="lazy"
           />
         </div>
@@ -504,6 +551,51 @@ const [tickStart, tickBestMile, tickEnd] = route.ticks;
     }
   }
 
+  /* ---------- Interstitial ---------- */
+  .interstitial-copy {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 22px;
+    padding: 170px 24px 180px;
+    text-align: center;
+  }
+
+  .interstitial-heading {
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: 44px;
+    line-height: 52px;
+    letter-spacing: -0.02em;
+    color: var(--text-primary);
+  }
+
+  .interstitial-sub {
+    font-size: 19px;
+    line-height: 30px;
+    color: var(--text-secondary);
+    max-width: 553px;
+  }
+
+  @media (max-width: 860px) {
+    .interstitial-copy {
+      gap: 16px;
+      padding: 120px 24px 130px;
+    }
+
+    .interstitial-heading {
+      font-size: 30px;
+      line-height: 38px;
+      max-width: 310px;
+    }
+
+    .interstitial-sub {
+      font-size: 15px;
+      line-height: 24px;
+      max-width: 310px;
+    }
+  }
+
   /* ---------- Surfaces ---------- */
   .surfaces {
     padding-block: 130px;
@@ -607,7 +699,7 @@ const [tickStart, tickBestMile, tickEnd] = route.ticks;
     height: calc(100% - 20px);
     border-radius: 26px;
     object-fit: cover;
-    object-position: top;
+    object-position: top center;
     opacity: 0;
   }
 
@@ -633,12 +725,24 @@ const [tickStart, tickBestMile, tickEnd] = route.ticks;
   }
 
   .rail-item {
+    appearance: none;
+    background: none;
+    border: none;
+    margin: 0;
+    padding: 0;
+    font: inherit;
+    letter-spacing: inherit;
+    cursor: pointer;
     color: rgba(var(--color-bone-rgb), 0.35);
     transition: color 260ms var(--ease-spring);
   }
 
-  .rail-item.is-active {
+  .rail-item:hover {
     color: var(--text-primary);
+  }
+
+  .rail-item.is-active {
+    color: var(--color-amber);
   }
 
   .rail-dot {
@@ -1128,6 +1232,16 @@ const [tickStart, tickBestMile, tickEnd] = route.ticks;
 
     blocks.forEach((block) => focusObserver.observe(block));
     window.addEventListener("resize", recomputeActive);
+
+    // Clickable rail: jump-scroll to the matching copy block, centered in
+    // the viewport so it lands inside the focus band above and the
+    // IntersectionObserver picks up the new state on its own.
+    railItems.forEach((item) => {
+      item.addEventListener("click", () => {
+        const target = blocks.find((block) => block.dataset.surface === item.dataset.surface);
+        target?.scrollIntoView({ behavior: "smooth", block: "center" });
+      });
+    });
   }
 
   // Row entrance: same visual result everywhere via IntersectionObserver,
