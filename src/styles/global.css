@@ -1,0 +1,110 @@
+/* AutoLog site — design tokens (Mature Cockpit identity, ported from
+   App/Shared/Theme.swift and the approved Figma frames, 2026-08-22). */
+
+:root {
+  /* Color */
+  --color-ground: #141416;
+  --color-bone: #e8e4dc;
+  --color-bone-rgb: 232, 228, 220;
+  --color-amber: #c87f3c; /* the ONLY accent on the site */
+  --color-card-fill: #1b1b1e;
+
+  /* Bone-on-ground text opacity steps, per the approved frames
+     (nav "AutoLog" ~0.85–1, links ~0.55, footer fine print ~0.35,
+     telemetry strip ~0.45). */
+  --text-primary: rgba(var(--color-bone-rgb), 1);
+  --text-secondary: rgba(var(--color-bone-rgb), 0.62);
+  --text-muted: rgba(var(--color-bone-rgb), 0.55);
+  --text-faint: rgba(var(--color-bone-rgb), 0.35);
+
+  /* Panel recipe: hairline stroke + 1px inner top-highlight + vignette. */
+  --panel-hairline: rgba(var(--color-bone-rgb), 0.12);
+  --panel-top-highlight: rgba(255, 255, 255, 0.05);
+  --panel-radius: 10px;
+
+  /* Type */
+  --font-display: "Space Grotesk", -apple-system, "Helvetica Neue", Arial, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  --tracking-display: -0.018em; /* headlines/numerals: -1.5% to -2%, Theme.swift uses -1.8% */
+  --tracking-microlabel: 0.16em; /* tracked-cap mono microlabels */
+
+  /* Motion (springs approximated via cubic-bezier; see motion spec) */
+  --ease-spring: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  color-scheme: dark;
+}
+
+body {
+  margin: 0;
+  background: var(--color-ground);
+  color: var(--text-primary);
+  font-family: var(--font-display);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+h1,
+h2,
+h3,
+p {
+  margin: 0;
+}
+
+a {
+  color: inherit;
+}
+
+/* Visible focus states everywhere (binding — semantic HTML + a11y floor). */
+a:focus-visible,
+button:focus-visible,
+summary:focus-visible,
+[tabindex]:focus-visible {
+  outline: 2px solid var(--color-amber);
+  outline-offset: 2px;
+}
+
+/* Cockpit ground: base color + a subtle radial vignette darkening toward
+   the edges (CockpitGround modifier in Theme.swift, ~16% corner darkening). */
+.cockpit-ground {
+  position: relative;
+  background: var(--color-ground);
+}
+
+.cockpit-ground::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(
+    ellipse at center,
+    transparent 0%,
+    rgba(0, 0, 0, 0.16) 100%
+  );
+}
+
+/* Mature Cockpit panel: hairline stroke, 1px inner top-highlight, and the
+   same vignette treatment, scaled to panel size. Reused across every
+   surface block on the site (HairlineCell in the app). */
+.panel {
+  position: relative;
+  border-radius: var(--panel-radius);
+  border: 1px solid var(--panel-hairline);
+  background: var(--color-card-fill);
+  box-shadow: inset 0 1px 0 var(--panel-top-highlight);
+}
+
+/* Tracked-cap IBM Plex Mono microlabel. Max 3 per viewport (identity rule). */
+.microlabel {
+  font-family: var(--font-mono);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-microlabel);
+  font-weight: 400;
+}
