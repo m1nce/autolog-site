@@ -208,10 +208,6 @@ const [tickStart, tickBestMile, tickEnd] = route.ticks;
           <p class="value">CAN + K-line</p>
         </div>
         <div class="panel spec-cell">
-          <p class="microlabel">TEST FLEET</p>
-          <p class="value">2002 Miata &middot; 2008 Camry</p>
-        </div>
-        <div class="panel spec-cell">
           <p class="microlabel">PORT</p>
           <p class="value">OBD2, 1996 on</p>
         </div>
@@ -503,16 +499,17 @@ const [tickStart, tickBestMile, tickEnd] = route.ticks;
     }
   }
 
-  /* Scroll-linked entrance, progressive enhancement only. Baseline above is
-     already fully visible/static, which also satisfies reduced-motion. */
-  @supports (animation-timeline: view()) {
-    @media (prefers-reduced-motion: no-preference) {
-      .surface-row {
-        animation: row-in linear both;
-        animation-timeline: view();
-        animation-range: entry 0% cover 30%;
-      }
-    }
+  /* Row entrance, JS-driven (IntersectionObserver in the page script) so it
+     works in every browser, not just ones with animation-timeline: view().
+     Baseline above is already fully visible/static — .row-pending is only
+     ever added by JS, so a script failure leaves rows visible, not blank. */
+  .surface-row.row-pending {
+    opacity: 0;
+    transform: translateY(28px);
+  }
+
+  .surface-row.is-in {
+    animation: row-in 700ms var(--ease-spring) both;
   }
 
   @keyframes row-in {
@@ -596,7 +593,8 @@ const [tickStart, tickBestMile, tickEnd] = route.ticks;
 
   .spec-cells {
     display: grid;
-    grid-template-columns: repeat(2, 296px);
+    grid-template-columns: repeat(3, 1fr);
+    width: 604px;
     gap: 12px;
   }
 
@@ -712,10 +710,39 @@ const [tickStart, tickBestMile, tickEnd] = route.ticks;
 
     // Fallback: if transitionend never fires (tab backgrounded mid-draw,
     // browser quirk), reveal anyway. classList.remove is a no-op if the
-    // transitionend path already ran, so this is safe either way.
+    // transitionend path already ran, so this is safe either way. Longer
+    // than the last tick's natural stagger (draw 1800ms + 2 * 160ms ≈ 2136ms)
+    // so it never preempts it.
     setTimeout(() => {
       ticks.forEach((tick) => tick.classList.remove("is-pending"));
-    }, 2000);
+    }, 2600);
+  }
+
+  // Row entrance: same visual result everywhere via IntersectionObserver,
+  // rather than only in browsers with animation-timeline: view(). Baseline
+  // CSS renders rows fully visible; row-pending (hidden) is only ever added
+  // here, so a script failure never leaves a blank section.
+  const rows = document.querySelectorAll<HTMLElement>(".surface-row");
+  if (rows.length && !reduceMotion) {
+    rows.forEach((row) => row.classList.add("row-pending"));
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries
+          .filter((entry) => entry.isIntersecting)
+          .forEach((entry, i) => {
+            const row = entry.target as HTMLElement;
+            observer.unobserve(row);
+            setTimeout(() => {
+              row.classList.remove("row-pending");
+              row.classList.add("is-in");
+            }, i * 90);
+          });
+      },
+      { threshold: 0.2 }
+    );
+
+    rows.forEach((row) => observer.observe(row));
   }
 </script>
 
