@@ -19,8 +19,8 @@ import Base from "../layouts/Base.astro";
           <span class="caret" aria-hidden="true"></span>
         </summary>
         <p class="a">
-          A Bluetooth LE ELM327, roughly $15. WiFi-only adapters won't pair;
-          the app talks BLE only.
+          Any BLE ELM327 adapter, usually about $15. Classic Bluetooth and
+          WiFi-only adapters cannot be used. iOS gives apps no path to them.
         </p>
       </details>
 
@@ -57,9 +57,9 @@ import Base from "../layouts/Base.astro";
           <span class="caret" aria-hidden="true"></span>
         </summary>
         <p class="a">
-          Yes. EVs and hybrids expose fewer PIDs over OBD2, so the app leans
-          on the signals each car actually broadcasts, plus GPS, to keep
-          trips accurate. Nothing invented, nothing assumed.
+          Yes. The app watches which signals the car actually answers and
+          builds the cockpit from those. A hybrid keeps its engine-off miles;
+          an EV gets gauges without fuel math.
         </p>
       </details>
 
@@ -69,9 +69,9 @@ import Base from "../layouts/Base.astro";
           <span class="caret" aria-hidden="true"></span>
         </summary>
         <p class="a">
-          No, not in normal use. The adapter draws a trickle from the OBD
-          port, the same as any dash accessory. Unplug it if the car sits
-          parked for weeks.
+          The adapter draws a small idle current from the port; the app
+          itself takes nothing from the car. Weeks of parking are fine. If
+          the car sits for a season, unplug the adapter.
         </p>
       </details>
 
@@ -81,9 +81,9 @@ import Base from "../layouts/Base.astro";
           <span class="caret" aria-hidden="true"></span>
         </summary>
         <p class="a">
-          On the phone. Trips, stats, and vehicle data are stored locally.
-          No account, no server, nothing leaves the device except two
-          silent lookups covered on the privacy page.
+          On the phone, in full. No account, no server, no analytics. Two
+          lookups leave the device: a VIN decode and road geometry from
+          OpenStreetMap. The privacy page lists both.
         </p>
       </details>
     </div>
