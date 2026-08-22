@@ -1,5 +1,6 @@
 ---
 import "../styles/global.css";
+import { withBase } from "../lib/base";
 
 interface Props {
   title: string;
@@ -14,7 +15,7 @@ const { title, description } = Astro.props;
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content={description} />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/svg+xml" href={withBase("/favicon.svg")} />
     <title>{title}</title>
     <style is:global>
       @font-face {
@@ -49,11 +50,11 @@ const { title, description } = Astro.props;
   </head>
   <body class="cockpit-ground">
     <header class="site-nav">
-      <a class="site-nav__logo" href="/">AutoLog</a>
+      <a class="site-nav__logo" href={withBase("/")}>AutoLog</a>
       <nav class="site-nav__links" aria-label="Primary">
-        <a href="/support">Support</a>
-        <a class="site-nav__privacy" href="/privacy">Privacy</a>
-        <a class="site-nav__cta" href="#app-store">Get the app</a>
+        <a href={withBase("/support")}>Support</a>
+        <a class="site-nav__privacy" href={withBase("/privacy")}>Privacy</a>
+        <a class="site-nav__cta" href={withBase("/#app-store")}>Get the app</a>
       </nav>
     </header>
 
@@ -70,8 +71,8 @@ const { title, description } = Astro.props;
       </div>
       <div class="site-footer__right">
         <nav class="site-footer__links" aria-label="Footer">
-          <a href="/support">Support</a>
-          <a href="/privacy">Privacy</a>
+          <a href={withBase("/support")}>Support</a>
+          <a href={withBase("/privacy")}>Privacy</a>
         </nav>
         <!-- TODO: dedicated contact address -->
         <p class="site-footer__email">hello@&hellip;</p>
@@ -156,7 +157,7 @@ const { title, description } = Astro.props;
 
       .site-footer__fineprint {
         font-size: 12.5px;
-        color: var(--text-faint);
+        color: var(--text-muted);
       }
 
       .site-footer__right {
@@ -184,7 +185,7 @@ const { title, description } = Astro.props;
       .site-footer__email {
         font-family: var(--font-mono);
         font-size: 12px;
-        color: var(--text-faint);
+        color: var(--text-muted);
       }
 
       /* Same 860px convention as index.astro's row breakpoint. The desktop

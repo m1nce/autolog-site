@@ -1,5 +1,6 @@
 ---
 import Base from "../layouts/Base.astro";
+import { withBase } from "../lib/base";
 import route from "../assets/hero-route.json";
 
 import heroLive from "../assets/screens/hero-live.webp";
@@ -22,7 +23,7 @@ const [tickStart, tickBestMile, tickEnd] = route.ticks;
         AutoLog records every trip from the OBD2 port. Stats, roads, faults.
         Nothing cleared, nothing written.
       </p>
-      <a class="app-store-badge" href="#">APP STORE BADGE</a>
+      <a id="app-store" class="app-store-badge" href="#">APP STORE BADGE</a>
       <!-- TODO: TestFlight public link -->
     </div>
 
@@ -71,7 +72,7 @@ const [tickStart, tickBestMile, tickEnd] = route.ticks;
         src={heroLive.src}
         width={heroLive.width}
         height={heroLive.height}
-        alt="AutoLog Live screen mid-drive: 62 mph, RPM 2,410, 7.7 mi, 35 mpg, coolant, throttle and load gauges"
+        alt=""
       />
     </div>
 
@@ -220,7 +221,7 @@ const [tickStart, tickBestMile, tickEnd] = route.ticks;
 
   <section class="privacy-strip">
     <p class="privacy-line">Trips stay on the phone. No account, no analytics.</p>
-    <a class="privacy-link" href="/privacy">Read the privacy policy</a>
+    <a class="privacy-link" href={withBase("/privacy")}>Read the privacy policy</a>
   </section>
 </Base>
 
@@ -708,6 +709,13 @@ const [tickStart, tickBestMile, tickEnd] = route.ticks;
       },
       { once: true }
     );
+
+    // Fallback: if transitionend never fires (tab backgrounded mid-draw,
+    // browser quirk), reveal anyway. classList.remove is a no-op if the
+    // transitionend path already ran, so this is safe either way.
+    setTimeout(() => {
+      ticks.forEach((tick) => tick.classList.remove("is-pending"));
+    }, 2000);
   }
 </script>
 
