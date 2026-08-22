@@ -1,12 +1,719 @@
 ---
 import Base from "../layouts/Base.astro";
+import route from "../assets/hero-route.json";
+
+import heroLive from "../assets/screens/hero-live.webp";
+import surfaceLive from "../assets/screens/surface-live.webp";
+import surfaceTrips from "../assets/screens/surface-trips.webp";
+import surfaceRoads from "../assets/screens/surface-roads.webp";
+import surfaceGarage from "../assets/screens/surface-garage.webp";
+
+const [tickStart, tickBestMile, tickEnd] = route.ticks;
 ---
 
 <Base
   title="AutoLog"
   description="AutoLog records every trip from the OBD2 port. Stats, roads, faults. Nothing cleared, nothing written."
 >
-  <p style="padding: 120px 64px; color: var(--text-secondary);">
-    Scaffold placeholder &middot; landing content lands in T2.
-  </p>
+  <section class="hero">
+    <div class="hero-copy">
+      <h1 class="hero-headline">The logbook your car never had.</h1>
+      <p class="hero-sub">
+        AutoLog records every trip from the OBD2 port. Stats, roads, faults.
+        Nothing cleared, nothing written.
+      </p>
+      <a class="app-store-badge" href="#">APP STORE BADGE</a>
+      <!-- TODO: TestFlight public link -->
+    </div>
+
+    <div class="hero-visual" aria-hidden="true">
+      <div class="hero-trace-box">
+        <svg
+          class="hero-trace"
+          viewBox={route.viewBox}
+          preserveAspectRatio="xMidYMid meet"
+          fill="none"
+        >
+          <path
+            id="hero-route-path"
+            d={route.path}
+            stroke="var(--color-bone)"
+            stroke-width="2.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          ></path>
+          <g class="hero-tick">
+            <circle cx={tickStart.x} cy={tickStart.y} r="5"></circle>
+            <text x={tickStart.x + 12} y={tickStart.y + 4} text-anchor="start"
+              >{tickStart.label}</text
+            >
+          </g>
+          <g class="hero-tick">
+            <circle cx={tickBestMile.x} cy={tickBestMile.y} r="5"></circle>
+            <text
+              x={tickBestMile.x - 12}
+              y={tickBestMile.y + 4}
+              text-anchor="end">{tickBestMile.label}</text
+            >
+          </g>
+          <g class="hero-tick">
+            <circle cx={tickEnd.x} cy={tickEnd.y} r="5"></circle>
+            <text x={tickEnd.x - 12} y={tickEnd.y + 4} text-anchor="end"
+              >{tickEnd.label}</text
+            >
+          </g>
+        </svg>
+      </div>
+
+      <!-- interim Figma-export stand-in; real simulator captures replace it once the app repo grows a debug store-seeder -->
+      <img
+        class="hero-device"
+        src={heroLive.src}
+        width={heroLive.width}
+        height={heroLive.height}
+        alt="AutoLog Live screen mid-drive: 62 mph, RPM 2,410, 7.7 mi, 35 mpg, coolant, throttle and load gauges"
+      />
+    </div>
+
+    <p class="telemetry-strip microlabel">RPM &middot; SPEED &middot; MPG &middot; COOLANT</p>
+  </section>
+
+  <section class="surfaces">
+    <div class="wrap">
+      <div class="surface-row">
+        <div class="surface-copy">
+          <p class="eyebrow microlabel">LIVE</p>
+          <h2>Read it while it runs.</h2>
+          <p class="body">
+            RPM, speed, throttle and coolant, sampled straight off the bus and
+            drawn like instrument hardware. A NOW and AVG fuel register keeps
+            the math running while you drive.
+          </p>
+        </div>
+        <div class="surface-device">
+          <!-- interim Figma-export stand-in; real simulator captures replace it once the app repo grows a debug store-seeder -->
+          <img
+            src={surfaceLive.src}
+            width={surfaceLive.width}
+            height={surfaceLive.height}
+            alt="AutoLog Live screen with NOW and AVG fuel economy registers"
+            loading="lazy"
+          />
+        </div>
+      </div>
+
+      <div class="surface-row">
+        <div class="surface-copy">
+          <p class="eyebrow microlabel">TRIPS</p>
+          <h2>Every drive files itself.</h2>
+          <p class="body">
+            Trips start when the engine does and close when you park. Each
+            one keeps its route on satellite, its economy, and a scrubber
+            that walks the drive back sample by sample.
+          </p>
+        </div>
+        <div class="surface-device">
+          <!-- interim Figma-export stand-in; real simulator captures replace it once the app repo grows a debug store-seeder -->
+          <img
+            src={surfaceTrips.src}
+            width={surfaceTrips.width}
+            height={surfaceTrips.height}
+            alt="AutoLog Trips screen with a satellite route card and a time scrubber"
+            loading="lazy"
+          />
+        </div>
+      </div>
+
+      <div class="surface-row">
+        <div class="surface-copy">
+          <p class="eyebrow microlabel">ROADS</p>
+          <h2>The map fills in where you drive.</h2>
+          <p class="body">
+            Every road you have driven, matched to the map and kept by name.
+            Roads counts miles known, never a percent of anything.
+          </p>
+        </div>
+        <div class="surface-device">
+          <!-- interim Figma-export stand-in; real simulator captures replace it once the app repo grows a debug store-seeder -->
+          <img
+            src={surfaceRoads.src}
+            width={surfaceRoads.width}
+            height={surfaceRoads.height}
+            alt="AutoLog Roads screen showing known roads lit against a dark map"
+            loading="lazy"
+          />
+        </div>
+      </div>
+
+      <div class="surface-row">
+        <div class="surface-copy">
+          <p class="eyebrow microlabel">GARAGE</p>
+          <h2>The car is the character.</h2>
+          <p class="body">
+            The paint chip, the VIN decoded spec sheet, the odometer story,
+            and a placard on its temperament. All of it written from what
+            the car actually did.
+          </p>
+        </div>
+        <div class="surface-device">
+          <!-- interim Figma-export stand-in; real simulator captures replace it once the app repo grows a debug store-seeder -->
+          <img
+            src={surfaceGarage.src}
+            width={surfaceGarage.width}
+            height={surfaceGarage.height}
+            alt="AutoLog Garage screen with the car's paint chip and temperament placard"
+            loading="lazy"
+          />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="not-a-scan-tool">
+    <div class="wrap">
+      <div class="panel not-a-scan-tool__panel">
+        <p class="eyebrow microlabel">NOT A SCAN TOOL</p>
+        <div class="honesty-line honesty-line--first">
+          <p>Reads faults and reports them.</p>
+        </div>
+        <div class="honesty-line">
+          <p>Never clears a code.</p>
+        </div>
+        <div class="honesty-line">
+          <p>Never writes to the car.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="hardware">
+    <div class="wrap">
+      <div class="hardware-copy">
+        <p class="eyebrow microlabel">HARDWARE</p>
+        <h2>One adapter, about $15.</h2>
+        <p class="body">
+          Any BLE ELM327 adapter works. WiFi-only adapters cannot be used.
+          Plug it into the OBD2 port, pair once inside the app, and forget
+          it is there.
+        </p>
+      </div>
+      <div class="spec-cells">
+        <div class="panel spec-cell">
+          <p class="microlabel">LINK</p>
+          <p class="value">BLE ELM327</p>
+        </div>
+        <div class="panel spec-cell">
+          <p class="microlabel">PROTOCOLS</p>
+          <p class="value">CAN + K-line</p>
+        </div>
+        <div class="panel spec-cell">
+          <p class="microlabel">TEST FLEET</p>
+          <p class="value">2002 Miata &middot; 2008 Camry</p>
+        </div>
+        <div class="panel spec-cell">
+          <p class="microlabel">PORT</p>
+          <p class="value">OBD2, 1996 on</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="privacy-strip">
+    <p class="privacy-line">Trips stay on the phone. No account, no analytics.</p>
+    <a class="privacy-link" href="/privacy">Read the privacy policy</a>
+  </section>
 </Base>
+
+<style>
+  .wrap {
+    max-width: 1440px;
+    margin-inline: auto;
+    padding-inline: 120px;
+  }
+
+  /* ---------- Hero ---------- */
+  .hero {
+    position: relative;
+    padding: 182px 0 0;
+    min-height: 844px;
+    overflow: clip;
+  }
+
+  .hero-copy {
+    position: relative;
+    z-index: 2;
+    padding-left: 120px;
+    max-width: 560px;
+  }
+
+  .hero-headline {
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: 62px;
+    line-height: 66px;
+    letter-spacing: -0.02em;
+    color: var(--text-primary);
+    max-width: 600px;
+  }
+
+  .hero-sub {
+    margin-top: 32px;
+    font-size: 19px;
+    line-height: 30px;
+    color: var(--text-secondary);
+    max-width: 430px;
+  }
+
+  .app-store-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 40px;
+    width: 176px;
+    height: 52px;
+    background: #000;
+    border: 1px solid rgba(255, 255, 255, 0.28);
+    border-radius: 10px;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    color: rgba(var(--color-bone-rgb), 0.7);
+    text-decoration: none;
+  }
+
+  .hero-visual {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+  }
+
+  .hero-trace-box {
+    position: absolute;
+    left: 43.71%;
+    top: 344px;
+    width: 55.58%;
+    aspect-ratio: 1000 / 504;
+  }
+
+  .hero-trace {
+    display: block;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+  }
+
+  #hero-route-path {
+    stroke-dasharray: none;
+  }
+
+  .hero-tick {
+    opacity: 1;
+    transform: none;
+    transform-box: fill-box;
+    transform-origin: center;
+    transition: opacity 260ms var(--ease-spring), transform 260ms var(--ease-spring);
+  }
+
+  .hero-tick circle {
+    fill: none;
+    stroke: var(--color-amber);
+    stroke-width: 2;
+  }
+
+  .hero-tick text {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    fill: var(--color-amber);
+  }
+
+  .hero-device {
+    position: absolute;
+    right: 10.14%;
+    top: 64px;
+    width: 314px;
+    max-width: 38%;
+    height: auto;
+  }
+
+  .telemetry-strip {
+    position: absolute;
+    left: 120px;
+    bottom: 46px;
+    z-index: 2;
+    font-size: 11px;
+    letter-spacing: 0.24em;
+    color: var(--text-faint);
+    padding-top: 24px;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    width: calc(100% - 240px);
+  }
+
+  @media (max-width: 860px) {
+    .hero {
+      padding-top: 48px;
+      min-height: 0;
+    }
+
+    .hero-copy {
+      padding-left: 24px;
+      padding-right: 24px;
+      max-width: none;
+    }
+
+    .hero-headline {
+      font-size: 36px;
+      line-height: 41px;
+      max-width: 330px;
+    }
+
+    .hero-sub {
+      margin-top: 24px;
+      font-size: 15.5px;
+      line-height: 24px;
+      max-width: 310px;
+    }
+
+    .app-store-badge {
+      width: 160px;
+      height: 48px;
+      margin-top: 32px;
+    }
+
+    .hero-visual {
+      position: relative;
+      inset: auto;
+      margin-top: 40px;
+      min-height: 600px;
+    }
+
+    .hero-device {
+      position: relative;
+      display: block;
+      margin: 0 auto;
+      right: auto;
+      top: auto;
+      width: 241px;
+      max-width: 62%;
+    }
+
+    .hero-trace-box {
+      left: 3.1%;
+      top: 388px;
+      width: 92.3%;
+    }
+
+    .telemetry-strip {
+      position: relative;
+      left: auto;
+      bottom: auto;
+      margin-top: 56px;
+      padding: 24px 24px 0;
+      width: 100%;
+    }
+  }
+
+  /* ---------- Surfaces ---------- */
+  .surfaces {
+    padding-block: 130px;
+  }
+
+  .surface-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 40px;
+  }
+
+  .surface-row + .surface-row {
+    margin-top: 130px;
+  }
+
+  .surface-row:nth-child(even) {
+    flex-direction: row-reverse;
+  }
+
+  .surface-copy {
+    max-width: 460px;
+  }
+
+  .eyebrow {
+    color: var(--color-amber);
+    font-size: 10px;
+    letter-spacing: 0.24em;
+  }
+
+  .surface-copy h2,
+  .hardware-copy h2 {
+    margin-top: 16px;
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: 32px;
+    line-height: 38px;
+    letter-spacing: -0.015em;
+    color: var(--text-primary);
+  }
+
+  .surface-copy .body,
+  .hardware-copy .body {
+    margin-top: 16px;
+    font-size: 16px;
+    line-height: 26px;
+    color: var(--text-secondary);
+    max-width: 440px;
+  }
+
+  .surface-device img {
+    display: block;
+    width: 271px;
+    max-width: 100%;
+    height: auto;
+    opacity: 1;
+    transform: none;
+  }
+
+  @media (max-width: 860px) {
+    .wrap {
+      padding-inline: 24px;
+    }
+
+    .surfaces {
+      padding-block: 80px;
+    }
+
+    .surface-row,
+    .surface-row:nth-child(even) {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 32px;
+    }
+
+    .surface-row + .surface-row {
+      margin-top: 90px;
+    }
+
+    .surface-device {
+      align-self: center;
+    }
+
+    .surface-device img {
+      width: 241px;
+    }
+  }
+
+  /* Scroll-linked entrance, progressive enhancement only. Baseline above is
+     already fully visible/static, which also satisfies reduced-motion. */
+  @supports (animation-timeline: view()) {
+    @media (prefers-reduced-motion: no-preference) {
+      .surface-row {
+        animation: row-in linear both;
+        animation-timeline: view();
+        animation-range: entry 0% cover 30%;
+      }
+    }
+  }
+
+  @keyframes row-in {
+    from {
+      opacity: 0;
+      transform: translateY(28px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* ---------- Not a scan tool ---------- */
+  .not-a-scan-tool {
+    padding-bottom: 150px;
+  }
+
+  .not-a-scan-tool .not-a-scan-tool__panel {
+    padding: 48px 56px;
+    border-radius: 16px;
+  }
+
+  .honesty-line {
+    padding-block: 26px;
+    border-top: 1px solid var(--panel-hairline);
+  }
+
+  .honesty-line--first {
+    border-top: none;
+    padding-top: 24px;
+  }
+
+  .honesty-line p {
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: 24px;
+    letter-spacing: -0.015em;
+    color: var(--text-secondary);
+  }
+
+  .honesty-line--first p {
+    color: var(--text-primary);
+  }
+
+  .not-a-scan-tool .eyebrow {
+    margin-bottom: 24px;
+    display: block;
+  }
+
+  @media (max-width: 860px) {
+    .not-a-scan-tool {
+      padding-bottom: 90px;
+    }
+
+    .not-a-scan-tool .not-a-scan-tool__panel {
+      padding: 32px 26px;
+    }
+
+    .honesty-line p {
+      font-size: 19px;
+    }
+  }
+
+  /* ---------- Hardware ---------- */
+  .hardware {
+    padding-bottom: 150px;
+  }
+
+  .hardware .wrap {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 60px;
+  }
+
+  .hardware-copy {
+    max-width: 460px;
+    flex-shrink: 0;
+  }
+
+  .spec-cells {
+    display: grid;
+    grid-template-columns: repeat(2, 296px);
+    gap: 12px;
+  }
+
+  .spec-cells .spec-cell {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 8px;
+    height: 96px;
+    padding-inline: 22px;
+    border-radius: 12px;
+  }
+
+  .spec-cell .microlabel {
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    color: var(--text-muted);
+  }
+
+  .spec-cell .value {
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: 17px;
+    letter-spacing: -0.01em;
+    color: rgba(var(--color-bone-rgb), 0.95);
+  }
+
+  @media (max-width: 860px) {
+    .hardware {
+      padding-bottom: 90px;
+    }
+
+    .hardware .wrap {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 40px;
+    }
+
+    .spec-cells {
+      grid-template-columns: 1fr;
+      width: 100%;
+    }
+
+    .spec-cells .spec-cell {
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+    }
+  }
+
+  /* ---------- Privacy strip ---------- */
+  .privacy-strip {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 18px;
+    padding-block: 96px;
+    border-top: 1px solid rgba(255, 255, 255, 0.07);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+    text-align: center;
+  }
+
+  .privacy-line {
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: 26px;
+    letter-spacing: -0.015em;
+    color: var(--text-primary);
+    max-width: 612px;
+    padding-inline: 24px;
+  }
+
+  .privacy-link {
+    font-size: 15px;
+    color: var(--color-amber);
+    text-decoration: none;
+  }
+
+  .privacy-link:hover {
+    text-decoration: underline;
+  }
+</style>
+
+<script>
+  const path = document.getElementById("hero-route-path") as SVGPathElement | null;
+  const ticks = document.querySelectorAll<HTMLElement>(".hero-tick");
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  // Baseline (no JS, or reduced motion): the path and ticks already render
+  // fully visible via CSS. Only when motion is allowed do we hide the path,
+  // draw it on via stroke-dashoffset, then stagger-reveal the ticks.
+  if (path && !reduceMotion) {
+    const length = path.getTotalLength();
+    path.style.strokeDasharray = `${length}`;
+    path.style.strokeDashoffset = `${length}`;
+    ticks.forEach((tick) => tick.classList.add("is-pending"));
+
+    requestAnimationFrame(() => {
+      path.style.transition = "stroke-dashoffset 1800ms cubic-bezier(0.22, 1, 0.36, 1)";
+      path.style.strokeDashoffset = "0";
+    });
+
+    path.addEventListener(
+      "transitionend",
+      () => {
+        ticks.forEach((tick, i) => {
+          setTimeout(() => tick.classList.remove("is-pending"), i * 160);
+        });
+      },
+      { once: true }
+    );
+  }
+</script>
+
+<style>
+  .hero-tick.is-pending {
+    opacity: 0;
+    transform: scale(0.6);
+  }
+</style>
