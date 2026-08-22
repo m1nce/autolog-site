@@ -1,0 +1,193 @@
+---
+import Base from "../layouts/Base.astro";
+---
+
+<Base
+  title="Privacy — AutoLog"
+  description="Where your data lives, the two requests the app makes, and what it never does."
+>
+  <div class="page-column">
+    <div class="block head">
+      <h1>Privacy</h1>
+      <p class="microlabel effective">Effective 2026-08-22</p>
+    </div>
+
+    <section class="block">
+      <h2>Where your data lives</h2>
+      <p>
+        Trips, stats, and everything the app knows about your car are
+        stored on your phone. There is no account, no sign-in, no
+        analytics, and no AutoLog server. Delete the app and the data goes
+        with it.
+      </p>
+    </section>
+
+    <section class="block">
+      <h2>The two requests the app makes</h2>
+      <p>
+        Both are best effort and silent. When they fail, the app skips
+        them and moves on.
+      </p>
+
+      <div class="panel request-panel">
+        <p class="microlabel request-label">VIN decode</p>
+        <p>
+          Your VIN is sent once to the NHTSA vPIC API, a US government
+          service, to identify the car's make, model, and year. Nothing
+          else is attached to the request.
+        </p>
+      </div>
+
+      <div class="panel request-panel">
+        <p class="microlabel request-label">Road geometry</p>
+        <p>
+          After a trip, the bounding box of the trip's area is sent to the
+          Overpass API, an OpenStreetMap service, to fetch road shapes and
+          names. The route you drove stays on the phone.
+        </p>
+      </div>
+    </section>
+
+    <section class="block">
+      <h2>What the app never does</h2>
+      <p>
+        It never uploads a route, never sells or shares driving data, and
+        never scores your driving. There is no third party code in the
+        app at all.
+      </p>
+    </section>
+
+    <section class="block block--last">
+      <h2>Questions</h2>
+      <p>Write to the engineer and you will get an answer.</p>
+      <!-- TODO: dedicated address -->
+      <p class="contact-email">hello@&hellip;</p>
+    </section>
+  </div>
+</Base>
+
+<style>
+  .page-column {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 100px 24px 60px;
+  }
+
+  .block {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    width: 100%;
+    max-width: 680px;
+    padding-bottom: 44px;
+  }
+
+  .block--last {
+    padding-bottom: 0;
+  }
+
+  .head {
+    padding-bottom: 52px;
+  }
+
+  .head h1 {
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: 44px;
+    letter-spacing: var(--tracking-display);
+    color: var(--text-primary);
+  }
+
+  .effective {
+    font-size: 10px;
+    font-weight: 500;
+    color: var(--text-muted);
+  }
+
+  .block h2 {
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: 22px;
+    letter-spacing: -0.015em;
+    color: var(--text-primary);
+  }
+
+  .block p {
+    font-family: var(--font-display);
+    font-size: 15.5px;
+    line-height: 25px;
+    color: var(--text-secondary);
+  }
+
+  .request-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 20px 24px;
+  }
+
+  .request-label {
+    font-size: 9.5px;
+    font-weight: 500;
+    color: var(--color-amber);
+  }
+
+  .request-panel p {
+    font-size: 15px;
+    line-height: 24px;
+    color: rgba(var(--color-bone-rgb), 0.6);
+  }
+
+  .contact-email {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--text-muted);
+  }
+
+  @media (max-width: 640px) {
+    .page-column {
+      padding: 64px 24px 40px;
+    }
+
+    .block {
+      gap: 12px;
+      padding-bottom: 36px;
+    }
+
+    .head {
+      padding-bottom: 40px;
+    }
+
+    .head h1 {
+      font-size: 34px;
+    }
+
+    .effective {
+      font-size: 9.5px;
+    }
+
+    .block h2 {
+      font-size: 19px;
+    }
+
+    .block p {
+      font-size: 14.5px;
+      line-height: 23px;
+    }
+
+    .request-panel {
+      gap: 8px;
+      padding: 16px 18px;
+    }
+
+    .request-label {
+      font-size: 9px;
+    }
+
+    .request-panel p {
+      font-size: 14px;
+      line-height: 22px;
+    }
+  }
+</style>

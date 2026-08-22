@@ -1,0 +1,293 @@
+---
+import Base from "../layouts/Base.astro";
+---
+
+<Base
+  title="Support — AutoLog"
+  description="Adapters, protocol timing, codes, EVs, battery drain, and where your data lives — six questions, answered straight."
+>
+  <div class="page-column">
+    <div class="head">
+      <h1>Support</h1>
+      <p class="sub">Six questions, answered straight.</p>
+    </div>
+
+    <div class="faq">
+      <details class="panel faq-item">
+        <summary>
+          <span class="q">Which adapters work?</span>
+          <span class="caret" aria-hidden="true"></span>
+        </summary>
+        <p class="a">
+          A Bluetooth LE ELM327, roughly $15. WiFi-only adapters won't pair;
+          the app talks BLE only.
+        </p>
+      </details>
+
+      <details class="panel faq-item" open>
+        <summary>
+          <span class="q"
+            >Why does the first connection to an older car take a while?</span
+          >
+          <span class="caret" aria-hidden="true"></span>
+        </summary>
+        <p class="a">
+          Older cars talk on the K-line, ISO 9141-2, and the protocol search
+          is slow by design. The adapter tries each protocol in turn until
+          the car answers. The 2002 Miata in the test fleet takes its time
+          too. Give the first connection half a minute; the ones after are
+          quicker.
+        </p>
+      </details>
+
+      <details class="panel faq-item" open>
+        <summary>
+          <span class="q">Does it clear codes?</span>
+          <span class="caret" aria-hidden="true"></span>
+        </summary>
+        <p class="a">
+          No. Ever. AutoLog reads live data and reports the faults it sees.
+          It never clears a code and never writes anything to the car.
+        </p>
+      </details>
+
+      <details class="panel faq-item">
+        <summary>
+          <span class="q">Does it work with EVs and hybrids?</span>
+          <span class="caret" aria-hidden="true"></span>
+        </summary>
+        <p class="a">
+          Yes. EVs and hybrids expose fewer PIDs over OBD2, so the app leans
+          on the signals each car actually broadcasts, plus GPS, to keep
+          trips accurate. Nothing invented, nothing assumed.
+        </p>
+      </details>
+
+      <details class="panel faq-item">
+        <summary>
+          <span class="q">Will it drain the car battery?</span>
+          <span class="caret" aria-hidden="true"></span>
+        </summary>
+        <p class="a">
+          No, not in normal use. The adapter draws a trickle from the OBD
+          port, the same as any dash accessory. Unplug it if the car sits
+          parked for weeks.
+        </p>
+      </details>
+
+      <details class="panel faq-item">
+        <summary>
+          <span class="q">Where does my data live?</span>
+          <span class="caret" aria-hidden="true"></span>
+        </summary>
+        <p class="a">
+          On the phone. Trips, stats, and vehicle data are stored locally.
+          No account, no server, nothing leaves the device except two
+          silent lookups covered on the privacy page.
+        </p>
+      </details>
+    </div>
+
+    <div class="panel contact">
+      <p class="contact-line">Still stuck? Write to the engineer.</p>
+      <!-- TODO: dedicated address -->
+      <p class="contact-email">hello@&hellip;</p>
+    </div>
+
+    <p class="build-marker">TESTFLIGHT BUILD 12</p>
+  </div>
+</Base>
+
+<style>
+  .page-column {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 100px 24px 40px;
+  }
+
+  .head {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    width: 100%;
+    max-width: 680px;
+    padding-bottom: 44px;
+  }
+
+  .head h1 {
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: 44px;
+    letter-spacing: var(--tracking-display);
+    color: var(--text-primary);
+  }
+
+  .sub {
+    font-family: var(--font-display);
+    font-size: 16px;
+    color: var(--text-muted);
+  }
+
+  .faq {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    width: 100%;
+    max-width: 680px;
+  }
+
+  .faq-item {
+    width: 100%;
+  }
+
+  .faq-item summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 22px 26px;
+    cursor: pointer;
+    list-style: none;
+  }
+
+  .faq-item summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .faq-item summary:focus-visible {
+    outline: 2px solid var(--color-amber);
+    outline-offset: -2px;
+    border-radius: var(--panel-radius);
+  }
+
+  .faq-item .q {
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: 17px;
+    line-height: 24px;
+    letter-spacing: -0.01em;
+    color: rgba(var(--color-bone-rgb), 0.92);
+  }
+
+  .faq-item .a {
+    padding: 0 60px 26px 26px;
+    font-family: var(--font-display);
+    font-size: 15px;
+    line-height: 24px;
+    color: rgba(var(--color-bone-rgb), 0.6);
+  }
+
+  .caret {
+    position: relative;
+    width: 10px;
+    height: 10px;
+    flex-shrink: 0;
+  }
+
+  .caret::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    margin: auto;
+    width: 7px;
+    height: 7px;
+    border-right: 1.5px solid var(--text-muted);
+    border-bottom: 1.5px solid var(--text-muted);
+    transform: translateY(-2px) rotate(45deg);
+    transition: transform 0.2s var(--ease-spring);
+  }
+
+  details[open] .caret::before {
+    transform: translateY(1px) rotate(225deg);
+  }
+
+  .contact {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    width: 100%;
+    max-width: 680px;
+    margin-top: 36px;
+    padding: 26px;
+    border-color: rgba(200, 127, 60, 0.35);
+  }
+
+  .contact-line {
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: 17px;
+    letter-spacing: -0.01em;
+    color: rgba(var(--color-bone-rgb), 0.92);
+  }
+
+  .contact-email {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--text-muted);
+  }
+
+  .build-marker {
+    padding: 72px 0 24px;
+    font-family: var(--font-mono);
+    font-weight: 500;
+    font-size: 10px;
+    letter-spacing: 0.24em;
+    color: var(--text-faint);
+  }
+
+  @media (max-width: 640px) {
+    .page-column {
+      padding: 64px 24px 30px;
+    }
+
+    .head {
+      gap: 10px;
+      padding-bottom: 32px;
+    }
+
+    .head h1 {
+      font-size: 34px;
+    }
+
+    .sub {
+      font-size: 15px;
+    }
+
+    .faq {
+      gap: 10px;
+    }
+
+    .faq-item summary {
+      padding: 18px 20px;
+    }
+
+    .faq-item .q {
+      font-size: 15.5px;
+      line-height: 22px;
+    }
+
+    .faq-item .a {
+      padding: 0 20px 20px;
+      font-size: 14.5px;
+      line-height: 23px;
+    }
+
+    .contact {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 10px;
+      margin-top: 28px;
+      padding: 22px 20px;
+    }
+
+    .contact-line {
+      font-size: 16px;
+    }
+
+    .build-marker {
+      padding: 56px 0 10px;
+    }
+  }
+</style>
