@@ -127,16 +127,20 @@ import Base from "../layouts/Base.astro";
     padding: 20px 24px;
   }
 
-  .request-label {
-    font-size: 9.5px;
-    font-weight: 500;
-    color: var(--color-amber);
-  }
-
   .request-panel p {
     font-size: 15px;
     line-height: 24px;
     color: rgba(var(--color-bone-rgb), 0.6);
+  }
+
+  /* Two classes (0,2,0) beats the ancestor ".block p" / ".request-panel p"
+     rules (each element+class, 0,1,1) so the amber microlabel color always
+     wins regardless of source order. */
+  .request-panel .request-label {
+    font-family: var(--font-mono);
+    font-size: 9.5px;
+    font-weight: 500;
+    color: var(--color-amber);
   }
 
   .contact-email {
@@ -181,13 +185,13 @@ import Base from "../layouts/Base.astro";
       padding: 16px 18px;
     }
 
-    .request-label {
-      font-size: 9px;
-    }
-
     .request-panel p {
       font-size: 14px;
       line-height: 22px;
+    }
+
+    .request-panel .request-label {
+      font-size: 9px;
     }
   }
 </style>

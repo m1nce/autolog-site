@@ -1,5 +1,8 @@
 # build output
 dist/
+
+# T5 verification screenshots (interim, not shipped)
+.verify/
 # generated types
 .astro/
 
