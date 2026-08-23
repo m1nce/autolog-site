@@ -11,6 +11,52 @@ import surfaceStats from "../assets/screens/surface-stats.webp";
 import surfaceGarage from "../assets/screens/surface-garage.webp";
 
 const [tickStart, tickBestMile, tickEnd] = route.ticks;
+
+// Single source of truth for the five surface states, shared by the
+// scrollytelling blocks and the .surfaces-fallback stacked rows so the two
+// can never drift out of copy sync again.
+const surfaces = [
+  {
+    surface: "live",
+    eyebrow: "LIVE",
+    heading: "Read it while it runs.",
+    body: "All the information you need while you drive. Get on-demand data of how your car is running.",
+    image: surfaceLive,
+    alt: "AutoLog Live screen with a 37 MPH speed gauge, 2,400 RPM, and NOW/AVG fuel economy registers",
+  },
+  {
+    surface: "trips",
+    eyebrow: "TRIPS",
+    heading: "Every drive recorded.",
+    body: "AutoLog wakes up and sleeps with your car. Each trip provides all the data and analysis you'll need.",
+    image: surfaceTrips,
+    alt: "AutoLog Trips screen with a satellite route card and a list of drives with mileage and mpg",
+  },
+  {
+    surface: "roads",
+    eyebrow: "ROADS",
+    heading: "AutoLog learns with you.",
+    body: "AutoLog learns your surroundings with you. It creates your own personalized map from your driving.",
+    image: surfaceRoads,
+    alt: "AutoLog Roads screen showing known roads lit against a dark map",
+  },
+  {
+    surface: "stats",
+    eyebrow: "STATS",
+    heading: "Every number earns its tile.",
+    body: "Analysis earned from a symphony of data. Your intuition can be verified through hard data.",
+    image: surfaceStats,
+    alt: "AutoLog Stats screen: the Measured Wall, RPM histogram and lifetime records",
+  },
+  {
+    surface: "garage",
+    eyebrow: "GARAGE",
+    heading: "Your car, personified.",
+    body: "We know your car is loved, so let it speak to you.",
+    image: surfaceGarage,
+    alt: "AutoLog Garage screen with the Miata's decoded spec sheet, odometer, and active fault codes",
+  },
+];
 ---
 
 <Base
@@ -79,6 +125,14 @@ const [tickStart, tickBestMile, tickEnd] = route.ticks;
     <p class="telemetry-strip microlabel">RPM &middot; SPEED &middot; MPG &middot; COOLANT</p>
   </section>
 
+  <section class="privacy-strip">
+    <div class="privacy-claim">
+      <p class="eyebrow microlabel">PRIVACY</p>
+      <p class="privacy-line">Trips stay on the phone. No account, no analytics.</p>
+    </div>
+    <a class="privacy-link" href={withBase("/privacy")}>Read the privacy policy</a>
+  </section>
+
   <section class="interstitial">
     <div class="wrap interstitial-copy">
       <h2 class="interstitial-heading">Drive. Let AutoLog do the rest.</h2>
@@ -93,46 +147,16 @@ const [tickStart, tickBestMile, tickEnd] = route.ticks;
     <div class="wrap surfaces-scrolly">
       <div class="scrolly-pinned">
         <div class="scrolly-device" aria-hidden="true">
-          <img
-            class="scrolly-screen is-active"
-            data-surface="live"
-            src={surfaceLive.src}
-            width={surfaceLive.width}
-            height={surfaceLive.height}
-            alt=""
-          />
-          <img
-            class="scrolly-screen"
-            data-surface="trips"
-            src={surfaceTrips.src}
-            width={surfaceTrips.width}
-            height={surfaceTrips.height}
-            alt=""
-          />
-          <img
-            class="scrolly-screen"
-            data-surface="roads"
-            src={surfaceRoads.src}
-            width={surfaceRoads.width}
-            height={surfaceRoads.height}
-            alt=""
-          />
-          <img
-            class="scrolly-screen"
-            data-surface="stats"
-            src={surfaceStats.src}
-            width={surfaceStats.width}
-            height={surfaceStats.height}
-            alt=""
-          />
-          <img
-            class="scrolly-screen"
-            data-surface="garage"
-            src={surfaceGarage.src}
-            width={surfaceGarage.width}
-            height={surfaceGarage.height}
-            alt=""
-          />
+          {surfaces.map((s, i) => (
+            <img
+              class={`scrolly-screen${i === 0 ? " is-active" : ""}`}
+              data-surface={s.surface}
+              src={s.image.src}
+              width={s.image.width}
+              height={s.image.height}
+              alt=""
+            />
+          ))}
         </div>
         <div class="scrolly-rail">
           <div class="rail-labels">
@@ -151,156 +175,36 @@ const [tickStart, tickBestMile, tickEnd] = route.ticks;
       </div>
 
       <div class="scrolly-copy">
-        <div class="scrolly-block is-active" data-surface="live">
-          <p class="eyebrow microlabel">LIVE</p>
-          <h2>Read it while it runs.</h2>
-          <p class="body">
-            All the information you need while you drive. Get on-demand data 
-            of how your car is running.
-          </p>
-        </div>
-        <div class="scrolly-block" data-surface="trips">
-          <p class="eyebrow microlabel">TRIPS</p>
-          <h2>Every drive recorded.</h2>
-          <p class="body">
-            AutoLog wakes up and sleeps with your car. Each trip provides 
-            all the data and analysis you'll need.
-          </p>
-        </div>
-        <div class="scrolly-block" data-surface="roads">
-          <p class="eyebrow microlabel">ROADS</p>
-          <h2>AutoLog learns with you.</h2>
-          <p class="body">
-            AutoLog learns your surroundings with you. It creates your own 
-            personalized map from your driving.
-          </p>
-        </div>
-        <div class="scrolly-block" data-surface="stats">
-          <p class="eyebrow microlabel">STATS</p>
-          <h2>Every number earns its tile.</h2>
-          <p class="body">
-            Analysis earned from a symphony of data. Your intuition can be 
-            verified through hard data.
-          </p>
-        </div>
-        <div class="scrolly-block" data-surface="garage">
-          <p class="eyebrow microlabel">GARAGE</p>
-          <h2>Your car, personified.</h2>
-          <p class="body">
-            We know your car is loved, so let it speak to you.
-          </p>
-        </div>
+        {surfaces.map((s, i) => (
+          <div class={`scrolly-block${i === 0 ? " is-active" : ""}`} data-surface={s.surface}>
+            <p class="eyebrow microlabel">{s.eyebrow}</p>
+            <h2>{s.heading}</h2>
+            <p class="body">{s.body}</p>
+          </div>
+        ))}
       </div>
     </div>
 
     <div class="wrap surfaces-fallback">
-      <div class="surface-row">
-        <div class="surface-copy">
-          <p class="eyebrow microlabel">LIVE</p>
-          <h2>Read it while it runs.</h2>
-          <p class="body">
-            RPM, speed, throttle and coolant, sampled straight off the bus and
-            drawn like instrument hardware. A NOW and AVG fuel register keeps
-            the math running while you drive.
-          </p>
+      {surfaces.map((s) => (
+        <div class="surface-row">
+          <div class="surface-copy">
+            <p class="eyebrow microlabel">{s.eyebrow}</p>
+            <h2>{s.heading}</h2>
+            <p class="body">{s.body}</p>
+          </div>
+          <div class="surface-device">
+            <!-- real simulator capture, seeded showcase store (2026-08-22) -->
+            <img
+              src={s.image.src}
+              width={s.image.width}
+              height={s.image.height}
+              alt={s.alt}
+              loading="lazy"
+            />
+          </div>
         </div>
-        <div class="surface-device">
-          <!-- real simulator capture, seeded showcase store (2026-08-22) -->
-          <img
-            src={surfaceLive.src}
-            width={surfaceLive.width}
-            height={surfaceLive.height}
-            alt="AutoLog Live screen with a 37 MPH speed gauge, 2,400 RPM, and NOW/AVG fuel economy registers"
-            loading="lazy"
-          />
-        </div>
-      </div>
-
-      <div class="surface-row">
-        <div class="surface-copy">
-          <p class="eyebrow microlabel">TRIPS</p>
-          <h2>Every drive files itself.</h2>
-          <p class="body">
-            Trips start when the engine does and close when you park. Each
-            one keeps its route on satellite, its economy, and a scrubber
-            that walks the drive back sample by sample.
-          </p>
-        </div>
-        <div class="surface-device">
-          <!-- real simulator capture, seeded showcase store (2026-08-22) -->
-          <img
-            src={surfaceTrips.src}
-            width={surfaceTrips.width}
-            height={surfaceTrips.height}
-            alt="AutoLog Trips screen with a satellite route card and a list of drives with mileage and mpg"
-            loading="lazy"
-          />
-        </div>
-      </div>
-
-      <div class="surface-row">
-        <div class="surface-copy">
-          <p class="eyebrow microlabel">ROADS</p>
-          <h2>The map fills in where you drive.</h2>
-          <p class="body">
-            Every road you have driven, matched to the map and kept by name.
-            Roads counts miles known, never a percent of anything.
-          </p>
-        </div>
-        <div class="surface-device">
-          <!-- real simulator capture, seeded showcase store (2026-08-22) -->
-          <img
-            src={surfaceRoads.src}
-            width={surfaceRoads.width}
-            height={surfaceRoads.height}
-            alt="AutoLog Roads screen showing known roads lit against a dark map"
-            loading="lazy"
-          />
-        </div>
-      </div>
-
-      <div class="surface-row">
-        <div class="surface-copy">
-          <p class="eyebrow microlabel">STATS</p>
-          <h2>Every number earns its tile.</h2>
-          <p class="body">
-            Longest haul, best tank, total climb. The Measured Wall collects
-            records as they happen and never rounds in your favor.
-          </p>
-        </div>
-        <div class="surface-device">
-          <!-- real simulator capture, seeded showcase store (2026-08-22) -->
-          <img
-            src={surfaceStats.src}
-            width={surfaceStats.width}
-            height={surfaceStats.height}
-            alt="AutoLog Stats screen: the Measured Wall, RPM histogram and lifetime records"
-            loading="lazy"
-          />
-        </div>
-      </div>
-
-      <div class="surface-row">
-        <div class="surface-copy">
-          <p class="eyebrow microlabel">GARAGE</p>
-          <h2>The car is the character.</h2>
-          <p class="body">
-            The paint chip, the VIN decoded spec sheet, the odometer story,
-            and a placard on its temperament. All of it written from what
-            the car actually did.
-          </p>
-        </div>
-        <div class="surface-device">
-          <!-- real simulator capture, seeded showcase store (2026-08-22) -->
-          <img
-            src={surfaceGarage.src}
-            width={surfaceGarage.width}
-            height={surfaceGarage.height}
-            alt="AutoLog Garage screen with the Miata's decoded spec sheet, odometer, and active fault codes"
-            loading="lazy"
-          />
-        </div>
-      </div>
+      ))}
     </div>
   </section>
 
@@ -349,10 +253,6 @@ const [tickStart, tickBestMile, tickEnd] = route.ticks;
     </div>
   </section>
 
-  <section class="privacy-strip">
-    <p class="privacy-line">Trips stay on the phone. No account, no analytics.</p>
-    <a class="privacy-link" href={withBase("/privacy")}>Read the privacy policy</a>
-  </section>
 </Base>
 
 <style>
@@ -564,13 +464,6 @@ const [tickStart, tickBestMile, tickEnd] = route.ticks;
     color: var(--text-primary);
   }
 
-  .interstitial-sub {
-    font-size: 19px;
-    line-height: 30px;
-    color: var(--text-secondary);
-    max-width: 553px;
-  }
-
   @media (max-width: 860px) {
     .interstitial-copy {
       gap: 16px;
@@ -580,12 +473,6 @@ const [tickStart, tickBestMile, tickEnd] = route.ticks;
     .interstitial-heading {
       font-size: 30px;
       line-height: 38px;
-      max-width: 310px;
-    }
-
-    .interstitial-sub {
-      font-size: 15px;
-      line-height: 24px;
       max-width: 310px;
     }
   }
@@ -1066,24 +953,34 @@ const [tickStart, tickBestMile, tickEnd] = route.ticks;
   }
 
   /* ---------- Privacy strip ---------- */
+  /* Sits directly under the hero (identity ruling, 2026-08-22): amplified to
+     read as a deliberate claim, not the footnote it was at the page bottom. */
   .privacy-strip {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 18px;
-    padding-block: 96px;
+    gap: 28px;
+    padding-block: 72px;
     border-top: 1px solid rgba(255, 255, 255, 0.07);
     border-bottom: 1px solid rgba(255, 255, 255, 0.07);
     text-align: center;
   }
 
+  .privacy-claim {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+  }
+
   .privacy-line {
     font-family: var(--font-display);
     font-weight: 500;
-    font-size: 26px;
+    font-size: 32px;
+    line-height: 38px;
     letter-spacing: -0.015em;
     color: var(--text-primary);
-    max-width: 612px;
+    max-width: 640px;
     padding-inline: 24px;
   }
 
@@ -1095,6 +992,23 @@ const [tickStart, tickBestMile, tickEnd] = route.ticks;
 
   .privacy-link:hover {
     text-decoration: underline;
+  }
+
+  @media (max-width: 860px) {
+    .privacy-strip {
+      gap: 20px;
+      padding-block: 56px;
+    }
+
+    .privacy-claim {
+      gap: 10px;
+    }
+
+    .privacy-line {
+      font-size: 22px;
+      line-height: 28px;
+      max-width: 310px;
+    }
   }
 </style>
 
