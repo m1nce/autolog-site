@@ -514,19 +514,26 @@ const surfaces = [
     flex-shrink: 0;
   }
 
+  /* Desktop-only tail buffer: position:sticky (top:140px) unsticks once the
+     column's remaining height can no longer hold the pinned box at that
+     offset. Without this, the pinned device drifts out of its stuck
+     position right as the last block reaches center, throwing off the
+     vertical-center match this fix is for. 700px comfortably clears the
+     pinned box's own height (~610px) plus the 140px top offset. */
+  @media (min-width: 861px) {
+    .scrolly-copy {
+      padding-bottom: 700px;
+    }
+  }
+
   .scrolly-block {
     display: flex;
     flex-direction: column;
     gap: 16px;
-    min-height: 72vh;
+    min-height: 100vh;
     justify-content: center;
     opacity: 0.25;
     transition: opacity 500ms var(--ease-spring);
-  }
-
-  .scrolly-block:first-child,
-  .scrolly-block:last-child {
-    min-height: 58vh;
   }
 
   .scrolly-block.is-active {
@@ -696,17 +703,13 @@ const surfaces = [
       padding-top: 48px;
     }
 
-    /* The device is only sticky at the top (~55vh incl. rail) on mobile, not
-       pinned beside the copy for its full scroll — so blocks need less
-       runway than desktop's 72vh to still feel like one focus per block. */
+    /* Same full-viewport runway as desktop (see .scrolly-block above): every
+       block, edges included, needs a full 100vh of scroll budget on both
+       sides of its centered content to reach the focus band's center line —
+       the device being sticky only at the top here doesn't change that. */
     .scrolly-block {
-      min-height: 60vh;
+      min-height: 100vh;
       gap: 12px;
-    }
-
-    .scrolly-block:first-child,
-    .scrolly-block:last-child {
-      min-height: 46vh;
     }
 
     .scrolly-block h2 {
