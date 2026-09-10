@@ -111,19 +111,19 @@ const image = (name: string) => withBase(`/images/living-cartography/${name}`);
   .steps h3 { font-size: 31px; }
   .steps p { font-size: 18px; line-height: 28px; }
 
-  @media (max-width: 860px) {
+  @media (max-width: 1350px) {
     .desktop-only { display: none; }
     .mobile-only { display: inline; }
-    .hero { min-height: 672px; }
-    .hero__copy { top: 16px; left: 24px; width: calc(100% - 48px); gap: 16px; }
+    .hero { display: flex; min-height: 672px; flex-direction: column; padding: 16px 24px 0; }
+    .hero__copy { position: static; width: 100%; gap: 16px; }
     .eyebrow { font-size: 13px; }
     .hero h1 { font-size: 46px; line-height: 48px; letter-spacing: -.92px; }
     .hero__body { width: min(329px, 100%); font-size: 17px; line-height: 25px; }
     .button { min-height: 49px; padding: 10px 22px; font-size: 15px; }
     .preview-note { font-size: 12px; }
-    .hero__art { top: 326px; left: 24px; width: calc(100% - 48px); height: 346px; }
+    .hero__art { position: relative; top: auto; left: auto; width: min(720px, 100%); height: auto; aspect-ratio: 342 / 323; margin-top: 18px; }
     .countryside { width: 100%; }
-    .miata { top: 135px; left: 26%; width: 83%; }
+    .miata { top: 41.8%; left: 26%; width: 83%; }
     .hero__art p { display: none; }
 
     .discovery { display: flex; min-height: 788px; flex-direction: column; gap: 0; padding: 36px 24px 32px; }
@@ -155,9 +155,24 @@ const image = (name: string) => withBase(`/images/living-cartography/${name}`);
     .steps p { font-size: 17px; line-height: 26px; }
   }
 
+  @media (min-width: 861px) and (max-width: 1350px) {
+    .desktop-only { display: inline; }
+    .mobile-only { display: none; }
+    .hero { min-height: 0; padding: 56px clamp(40px, 7vw, 80px) 52px; }
+    .hero__copy { width: min(680px, 100%); }
+    .hero h1 { font-size: clamp(54px, 6vw, 68px); line-height: 1.08; }
+    .hero__art { margin-inline: auto; margin-top: 40px; margin-bottom: 36px; }
+    .hero__art p { display: block; top: auto; right: 0; bottom: -36px; left: auto; }
+    .discovery { align-items: center; }
+    .discovery > *, .recording > *, .setup > * { width: min(800px, 100%); }
+    .discovery > .comparison-card { width: min(540px, 100%); }
+    .recording, .setup { align-items: center; }
+    .recording__preview img { width: 255px; }
+    .recording__preview figcaption { width: 300px; }
+  }
+
   @media (max-width: 360px) {
     .hero h1 { font-size: 41px; line-height: 44px; }
-    .hero__art { top: 285px; }
     .comparison-card { padding-inline: 20px; }
     .setup__intro h2 { font-size: 36px; line-height: 40px; }
   }
