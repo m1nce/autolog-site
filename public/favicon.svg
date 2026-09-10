@@ -1,1 +1,6 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="14" fill="#141416"/><path d="M14 46 C 22 40, 24 30, 32 26 S 46 22, 50 16" fill="none" stroke="#E8E4DC" stroke-width="4" stroke-linecap="round"/><circle cx="50" cy="16" r="4.5" fill="none" stroke="#C87F3C" stroke-width="3"/></svg>
+<svg preserveAspectRatio="none" overflow="visible" style="display: block;" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="Favicon / 16 px monochrome / tight fit">
+<path id="Vector" fill-rule="evenodd" clip-rule="evenodd" d="M2.16289 5.69311C3.31819 3.79026 6.64818 3.51842 8.2792 4.8776C9.02675 5.5572 9.36655 6.64454 9.36655 8.07168V13.7123H7.66757V12.8288C6.44431 13.9841 3.7939 14.3919 2.09493 13.1686C0.32799 11.8094 0.871662 9.3629 2.50268 8.61535C3.99778 7.93576 6.24043 8.13964 7.66757 8.34352V7.52801C7.66757 6.10087 6.92002 5.42128 5.6288 5.42128C4.54145 5.42128 3.72594 5.96495 3.18227 6.7125L2.16289 5.69311ZM7.66757 9.83862C6.44431 9.43086 4.47349 9.3629 3.38615 9.90658C2.43472 10.3823 2.36676 11.4017 3.18227 12.0813C4.26962 12.9647 6.30839 12.489 7.1239 11.5376C7.53165 11.0619 7.66757 10.5182 7.66757 9.83862Z" fill="#24453B"/>
+<path id="Vector_2" d="M8.91945 2.08771H11.0655V11.6556H15V13.7123H8.91945V2.08771Z" fill="#24453B"/>
+</g>
+</svg>
