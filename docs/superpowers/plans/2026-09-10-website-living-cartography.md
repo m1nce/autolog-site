@@ -214,11 +214,13 @@ Run `npm run build && node scripts/check-information.mjs`; expect failure on the
 
 | Task | Owner | Depends on | State | Commit | Adversarial review |
 | --- | --- | --- | --- | --- | --- |
-| 1 Shared shell/assets | Unassigned | Preflight | Not started | None | Not run |
-| 2 Homepage | Unassigned | 1 approved | Not started | None | Not run |
-| 3 Support/Privacy | Unassigned | 1 approved | Not started | None | Not run |
-| Whole-branch gate | Controller + fresh reviewer | 1–3 | Not started | None | Not run |
+| 1 Shared shell/assets | site_shell | Preflight | Complete | 5069152, 4202ac3 | Passed after wordmark hit-area fix |
+| 2 Homepage | site_home | 1 approved | Complete | 5a59086, 089b53b | Passed after responsive-layout fix |
+| 3 Support/Privacy | site_information | 1 approved | Complete | b5c12bd, ead3480 | Passed after restoring plain-text Privacy reference |
+| Whole-branch gate | Controller + fresh reviewer | 1–3 | In review | ead3480 | Pending |
 
 Rulings: full website visual approval received 2026-09-10. Static baseline is the approved website scope; app motion and community hosting are not imported into it. Planning creates no website source changes, deployment, or app release. Task 2/3 parallelism is permitted after Task 1 but not required.
 
 Self-review: all spec routes map to Tasks 1–3; each asset has one owner; Base prop names/tokens/path conventions are consistent; browser checks cover the limits of narrow Node assertions; publication remains separate.
+
+Execution note: Task 1's obsolete-contact assertion is scoped to the header/footer; Task 3 owns and checks obsolete body contact removal. The optional Support inline Privacy link was omitted to preserve approved text flow and44px target sizing via the existing footer link. Task 2 uses natural-flow stacked layouts until the desktop composition fits; the approved1440/390 endpoints remain the design reference. See `docs/design/website-verification.md` for actual verification and pre-release concerns. No push, merge, deployment, app changes, or Figma promotion occurred.
