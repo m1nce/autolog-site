@@ -13,6 +13,7 @@
 
 ## Review decisions and remaining release concerns
 
+- All three task reviews passed after scoped fixes. Whole-branch review found no blocking issues; its minor header-link/CSS-font test coverage finding was fixed in `68429c4` and passed scoped re-review. A fresh build, all three generated-output checks, and branch whitespace checks passed afterward. This final change touched tests only; the visually verified application source is unchanged.
 - The Task 1 shell assertion was scoped to header/footer for obsolete contact text. The old information-page body belonged to Task 3; its full-page checker now verifies placeholder contact is absent. Had that task not run, the shell check alone would not have proved complete removal.
 - The existing policy's “Your VIN is sent once” wording was preserved as requested. `App/VINDecoderClient.swift` describes one request per user-initiated decode, not a once-per-install guarantee. Review that wording separately before publication if it could mislead readers.
 - The approved Miata artwork retains its previously deferred windshield/glazing limitation. No new image or transparency cleanup was substituted.

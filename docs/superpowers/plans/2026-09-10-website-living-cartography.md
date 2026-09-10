@@ -217,7 +217,7 @@ Run `npm run build && node scripts/check-information.mjs`; expect failure on the
 | 1 Shared shell/assets | site_shell | Preflight | Complete | 5069152, 4202ac3 | Passed after wordmark hit-area fix |
 | 2 Homepage | site_home | 1 approved | Complete | 5a59086, 089b53b | Passed after responsive-layout fix |
 | 3 Support/Privacy | site_information | 1 approved | Complete | b5c12bd, ead3480 | Passed after restoring plain-text Privacy reference |
-| Whole-branch gate | Controller + fresh reviewer | 1–3 | In review | ead3480 | Pending |
+| Whole-branch gate | Controller + fresh reviewer | 1–3 | Complete | 68429c4 | No blocking findings; minor checker gap fixed and scoped re-review passed |
 
 Rulings: full website visual approval received 2026-09-10. Static baseline is the approved website scope; app motion and community hosting are not imported into it. Planning creates no website source changes, deployment, or app release. Task 2/3 parallelism is permitted after Task 1 but not required.
 
