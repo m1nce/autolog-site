@@ -12,6 +12,7 @@ const { title, description, home = false } = Astro.props;
 const newsreader = withBase("/fonts/Newsreader-Regular.woff2");
 const dmSans = withBase("/fonts/DMSans-Regular.woff2");
 const brand = withBase("/fonts/BricolageGrotesque-Medium.woff2");
+const logo = withBase("/images/brand/autolog-symbol.svg");
 const fontFaces = [
   ["Newsreader", newsreader, 400],
   ["DM Sans", dmSans, 400],
@@ -35,7 +36,7 @@ const fontFaces = [
   </head>
   <body>
     <header class="site-header">
-      <a class="site-wordmark" href={withBase("/")}>AutoLog</a>
+      <a class="site-wordmark" href={withBase("/")}><img src={logo} width="44" height="44" alt="" />AutoLog</a>
       <nav class="desktop-nav" aria-label="Primary">
         <a href={withBase("/#the-app")}>The app</a>
         <a href={withBase("/support")}>Support</a>
@@ -52,7 +53,7 @@ const fontFaces = [
     </main>
 
     <footer class="site-footer">
-      <a class="site-footer__wordmark" href={withBase("/")}>AutoLog</a>
+      <a class="site-footer__wordmark" href={withBase("/")}><img src={logo} width="44" height="44" alt="" />AutoLog</a>
       <p class="site-footer__line">Your drives. Your cars. Your story.</p>
       <nav class="site-footer__links" aria-label="Footer">
         <a href={withBase("/support")}>Support</a>
@@ -75,6 +76,7 @@ const fontFaces = [
   .site-footer__wordmark {
     display: inline-flex;
     align-items: center;
+    gap: 10px;
     min-height: 44px;
     font-family: var(--font-brand);
     font-weight: 500;
