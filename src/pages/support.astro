@@ -1,6 +1,5 @@
 ---
 import Base from "../layouts/Base.astro";
-import { withBase } from "../lib/base";
 ---
 
 <Base title="Support · AutoLog" description="Connecting your car, recording a drive, and knowing where your data goes.">
@@ -15,7 +14,7 @@ import { withBase } from "../lib/base";
     <section><h2>Does AutoLog clear fault codes?</h2><p>No. AutoLog reads live data and reports the faults it sees. It never clears a code or writes anything to the car.</p></section>
     <section><h2>What about EVs and hybrids?</h2><p>AutoLog uses the signals your car provides. A hybrid keeps its engine-off miles; an EV gets a display without fuel calculations. Available readings vary by car.</p></section>
     <section><h2>What if I’m parking for a while?</h2><p>Power draw depends on your adapter and car. Follow your adapter maker’s storage guidance and unplug the adapter for extended parking.</p></section>
-    <section><h2>Where does my data live?</h2><p>On your phone. No account, no AutoLog server, and no analytics. VIN decoding and road-geometry lookups use external services; the <a href={withBase("/privacy")}>Privacy page</a> explains them.</p></section>
+    <section><h2>Where does my data live?</h2><p>On your phone. No account, no AutoLog server, and no analytics. VIN decoding and road-geometry lookups use external services; the Privacy page explains them.</p></section>
   </article>
 </Base>
 

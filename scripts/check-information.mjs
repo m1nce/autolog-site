@@ -7,6 +7,7 @@ const privacy = await readFile('dist/privacy/index.html', 'utf8');
 assert.match(support, /A little help,/);
 assert.equal((support.match(/<h2[\s>]/g) ?? []).length, 6);
 assert.doesNotMatch(support, /<details|TESTFLIGHT BUILD|hello@|\$15|Weeks of parking are fine/);
+assert.doesNotMatch(support, /<a[^>]+>Privacy page<\/a>/);
 assert.match(privacy, /22 August 2026/);
 
 const text = privacy

@@ -31,3 +31,23 @@ Result: exit 0. Astro built three pages; output ended with `Information page che
 - The focused checker rejects the removed accordion, build marker, price, parking guarantee, and placeholder email.
 - Product evidence supports the scoped Support claims. Pre-release concern remains: policy wording “Your VIN is sent once” describes a user-initiated decode, not a guaranteed once-per-install limit. It was preserved because legal copy changes were explicitly out of scope.
 - Browser/Figma screenshot, 200% zoom, 320 px, and navigation checks are assigned to the controller and were not duplicated here.
+
+## Review fix — inline Privacy target
+
+The approved Support body renders “Privacy page” as plain text; the shared footer remains the page’s 44 px Privacy navigation target. Removed the inline anchor and its now-unused `withBase` import without changing any visible words.
+
+RED command:
+
+```sh
+PATH=/Users/minchan/.nvm/versions/node/v22.21.1/bin:$PATH npm run build && PATH=/Users/minchan/.nvm/versions/node/v22.21.1/bin:$PATH node scripts/check-information.mjs
+```
+
+Result: exit 1 after a successful build. The new built-output assertion rejected `<a ...>Privacy page</a>`.
+
+GREEN command:
+
+```sh
+PATH=/Users/minchan/.nvm/versions/node/v22.21.1/bin:$PATH npm run build && PATH=/Users/minchan/.nvm/versions/node/v22.21.1/bin:$PATH node scripts/check-information.mjs && PATH=/Users/minchan/.nvm/versions/node/v22.21.1/bin:$PATH node scripts/check-shell.mjs && PATH=/Users/minchan/.nvm/versions/node/v22.21.1/bin:$PATH node scripts/check-home.mjs
+```
+
+Result: exit 0. Astro built all three routes; all information, shared-shell, and homepage checks passed.
