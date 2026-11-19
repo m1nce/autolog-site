@@ -1,34 +1,179 @@
 ---
 import Base from "../layouts/Base.astro";
+
+const description = "AutoLog saves your driving history on your iPhone. Some features use outside services, and you can choose to share a trip yourself.";
 ---
 
-<Base title="Privacy · AutoLog" description="What stays on your phone, and what leaves it.">
-  <article class="reading-page reading-page--privacy">
-    <header class="introduction">
-      <p class="effective">Privacy · Effective 22 August 2026</p>
-      <h1>Your drives<br />are personal.</h1>
-      <p class="lede">What stays on your phone, and what leaves it.</p>
+<Base title="Privacy · AutoLog" description={description}>
+  <article class="privacy">
+    <header class="wrap intro">
+      <h1>Privacy in AutoLog</h1>
+      <p>{description}</p>
+      <nav aria-label="On this page">
+        <a href="#on-your-iphone">On your iPhone</a>
+        <a href="#online-requests">Online requests</a>
+        <a href="#sharing">Sharing</a>
+      </nav>
     </header>
-    <section><h2>Where your data lives</h2><p>Trips, stats, and everything the app knows about your car are stored on your phone. There is no account, no sign-in, no analytics, and no AutoLog server. Delete the app and the data goes with it.</p></section>
-    <section><h2>The two requests the app makes</h2><p>Both are best effort and silent. When they fail, the app skips them and moves on.</p></section>
-    <section><h2>VIN decoding</h2><p>Your VIN is sent once to the NHTSA vPIC API, a US government service, to identify the car's make, model, and year. Nothing else is attached to the request.</p></section>
-    <section><h2>Road geometry</h2><p>After a trip, the bounding box of the trip's area is sent to the Overpass API, an OpenStreetMap service, to fetch road shapes and names. The route you drove stays on the phone.</p></section>
-    <section><h2>What the app never does</h2><p>It never uploads a route, never sells or shares driving data, and never scores your driving. There is no third party code in the app at all.</p></section>
+
+    <div class="wrap columns overview">
+      <section class="local" id="on-your-iphone" aria-labelledby="local-title" tabindex="-1">
+        <h2 id="local-title">On your iPhone</h2>
+        <p>AutoLog keeps the trip record in the app on your phone. You can record drives without an AutoLog account.</p>
+        <dl>
+          <div>
+            <dt>Drive history</dt>
+            <dd>Recorded routes, trip times, distances, and driving statistics.</dd>
+          </div>
+          <div>
+            <dt>Your car</dt>
+            <dd>Saved vehicle details, readings from your adapter, and fault codes your car reports.</dd>
+          </div>
+        </dl>
+      </section>
+
+      <section class="requests" id="online-requests" aria-labelledby="requests-title" tabindex="-1">
+        <h2 id="requests-title">Online requests</h2>
+        <div class="topic">
+          <h3>Looking up a car by VIN</h3>
+          <p>If you choose VIN lookup, AutoLog sends your vehicle identification number (VIN) to the U.S. National Highway Traffic Safety Administration’s vPIC service to find the make, model, and year. You can also enter those details yourself.</p>
+        </div>
+        <div class="topic">
+          <h3>Finding roads after a drive</h3>
+          <p>When AutoLog needs road data, it sends the boundaries of the trip area to the Overpass API for OpenStreetMap road names and shapes. AutoLog matches those roads to your recorded route on your iPhone.</p>
+        </div>
+        <div class="topic">
+          <h3>Showing maps and estimating travel time</h3>
+          <p>AutoLog uses Apple services to load the map area and look up place names from coordinates. For a travel-time estimate, it sends Apple the trip’s start and end coordinates after the drive or when you open its details.</p>
+          <a class="source" href="https://www.apple.com/legal/privacy/data/en/apple-maps/">Apple Maps privacy</a>
+        </div>
+      </section>
+    </div>
+
+    <section class="sharing" id="sharing" aria-labelledby="sharing-title" tabindex="-1">
+      <div class="wrap columns">
+        <h2 id="sharing-title">Sharing a trip or file</h2>
+        <div>
+          <div class="topic">
+            <h3>Trip cards</h3>
+            <p>A card can show your route and caption. Review both before sharing. On eligible routes, you can trim the ends of the route image. Place names in the caption are edited separately.</p>
+          </div>
+          <div class="topic">
+            <h3>CSV files and diagnostic logs</h3>
+            <p>A single-trip CSV can include timestamps, car readings, and exact GPS coordinates. A vehicle CSV contains trip summaries. A diagnostic log contains the adapter’s responses. You choose where to send or save the file.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="wrap notes">
+      <section>
+        <h2>Location access</h2>
+        <p>AutoLog uses location to record a drive. Allowing background location lets it record routes when drives start automatically. You can change this in iPhone Settings.</p>
+      </section>
+      <section>
+        <h2>Backups and deletion</h2>
+        <p>Depending on your settings, iCloud Backup can include AutoLog data. Deleting AutoLog removes its local data. Copies you have shared or backed up are managed separately.</p>
+        <a class="source" href="https://support.apple.com/en-us/108770">About iCloud Backup</a>
+      </section>
+      <section>
+        <h2>Visiting this website</h2>
+        <p>The sample drive uses example data. GitHub Pages hosts the site and logs visitors’ IP addresses for security.</p>
+        <a class="source" href="https://docs.github.com/en/pages/getting-started-with-github-pages/what-is-github-pages">About GitHub Pages</a>
+      </section>
+    </div>
   </article>
 </Base>
 
 <style>
-  .introduction, section { display: flex; flex-direction: column; }
-  .introduction { gap: 18px; }
-  .effective { font-size: 14px; }
-  h1 { font-size: 66px; line-height: 71px; }
-  .lede, section p { line-height: 28px; }
-  .lede { font-size: 18px; }
-  section { gap: 14px; }
-  h2 { font-size: 31px; line-height: 37px; }
-  section p { font-size: 17px; }
+  .privacy { font-size: 1.125rem; line-height: 1.6875rem; overflow-wrap: anywhere; }
+  .wrap { width: min(87.5%, 1260px); margin-inline: auto; }
+  .intro { padding-block: 46px 42px; }
+  h1 { font-size: 4.125rem; line-height: 4.625rem; }
+  .intro p { max-width: 860px; margin-top: 14px; font-size: 1.375rem; line-height: 1.9375rem; }
+  nav { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 20px; }
+  a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    max-width: 100%;
+    min-height: 44px;
+    font-size: .9375rem;
+    line-height: 1.25rem;
+    font-weight: 500;
+    text-align: center;
+  }
+  nav a { width: 9.0625rem; padding: 6px 1px; border: 1px solid #98a99b; border-radius: 8px; text-decoration: none; }
+  nav a:nth-child(2) { width: 9.375rem; }
+  nav a:last-child { width: 6.1875rem; }
+  nav a:hover { text-decoration: underline; }
+  .source { padding-inline: .75rem; text-underline-offset: .16em; }
+  .columns {
+    display: grid;
+    grid-template-columns: minmax(0, 482fr) minmax(0, 688fr);
+    align-items: start;
+    column-gap: min(6.25vw, 90px);
+  }
+  .overview { padding-bottom: 46px; }
+  .local { padding: 32px 32px 37px; border-radius: 14px; background: #e6ebdd; }
+  .local h2 { margin-bottom: 10px; font-size: 2.5625rem; line-height: 2.9375rem; }
+  dl { margin: 24px 0 0; }
+  dl > div, .topic, .notes section { border-top: 1px solid var(--rule); }
+  dl > div { padding-top: 12px; }
+  dl > div + div { margin-top: 20px; }
+  dt { font-size: 1.1875rem; line-height: 1.625rem; font-weight: 500; }
+  dd { margin: 4px 0 0; }
+
+  .requests h2 { margin-bottom: 18px; font-size: 2.6875rem; line-height: 3.125rem; }
+  .topic { padding-top: 14px; }
+  .topic + .topic { margin-top: 23px; }
+  h3 { margin-bottom: 6px; font: 500 1.375rem/1.8125rem var(--font-body); }
+  .requests .source { margin-top: 14px; }
+  .sharing { padding-block: 46px 42px; background: #edefe5; }
+  .sharing h2 { margin-top: -3px; font-size: 2.75rem; line-height: 3.1875rem; }
+  .sharing .topic { padding-top: 13px; }
+  .sharing h3 { margin-bottom: 5px; }
+  .sharing .topic + .topic { margin-top: 22px; }
+
+  .notes {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 32px;
+    padding-block: 46px 30px;
+    font-size: 1.0625rem;
+    line-height: 1.5625rem;
+  }
+  .notes section { padding-top: 13px; }
+  .notes h2 { margin-bottom: 7px; font-size: 1.8125rem; line-height: 2.25rem; }
+  .notes .source { margin-top: 2px; }
+
   @media (max-width: 860px) {
-    h1 { font-size: 43px; line-height: 48px; }
-    h2 { font-size: 27px; line-height: 33px; }
+    .privacy, .notes { font-size: 1rem; line-height: 1.4375rem; }
+    .wrap { width: min(calc(100% - 40px), 634px); }
+    .intro { padding-block: 31px 28px; }
+    h1 { font-size: 2.625rem; line-height: 2.9375rem; }
+    .intro p { margin-top: 10px; font-size: 1.0625rem; line-height: 1.5rem; }
+    nav { gap: 8px; margin-top: 17px; }
+    nav a { width: 7.3125rem; }
+    nav a:nth-child(2) { width: 7.8125rem; }
+    nav a:last-child { width: 5rem; }
+    .columns, .notes { grid-template-columns: minmax(0, 1fr); }
+    .overview { row-gap: 34px; padding-bottom: 26px; }
+    .local { padding: 20px; }
+    .local h2 { font-size: 2rem; line-height: 2.375rem; }
+    dl { margin-top: 21px; }
+    dl > div + div { margin-top: 16px; }
+    dt { font-size: 1.0625rem; line-height: 1.4375rem; }
+    .requests h2, .sharing h2 { font-size: 2.0625rem; line-height: 2.4375rem; }
+    .requests h2 { margin-bottom: 15px; }
+    .topic { padding-top: 12px; }
+    .topic + .topic, .sharing .topic + .topic { margin-top: 18px; }
+    h3 { font-size: 1.1875rem; line-height: 1.5625rem; }
+    .requests .source { margin-top: 9px; }
+    .sharing { padding-block: 27px 28px; }
+    .sharing .columns { row-gap: 16px; }
+    .sharing h2 { margin: 0; }
+    .notes { gap: 18px; padding-block: 28px 25px; }
+    .notes h2 { font-size: 1.4375rem; line-height: 1.8125rem; }
   }
 </style>

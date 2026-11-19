@@ -1,0 +1,3 @@
+# Privacy page
+
+Implement the approved designs in Figma file Cc8gZIMvqyxI3YHW2Kh5bf, desktop 2020:3 and mobile 2020:154. Use the displayed wording verbatim for local records, outside services, sharing, backups, location access and website hosting. Reuse the website wordmark and fonts. Home and Support navigate within the configured GitHub Pages base. The three jump links work without JavaScript. Provider links point to the approved Apple and GitHub pages. Desktop places local data beside online requests, followed by sharing and the three final topics. Mobile presents them in reading order. Publish only when separately requested.

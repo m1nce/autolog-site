@@ -10,7 +10,7 @@ interface Props {
 }
 
 const { title, description, home = false, support = false } = Astro.props;
-const compactShell = home || support;
+const privacy = !home && !support;
 const newsreader = withBase("/fonts/Newsreader-Regular.woff2");
 const dmSans = withBase("/fonts/DMSans-Regular.woff2");
 const brand = withBase("/fonts/BricolageGrotesque-Medium.woff2");
@@ -19,7 +19,7 @@ const fontFaces = [
   ["Newsreader", newsreader, 400],
   ["DM Sans", dmSans, 400],
   ["Bricolage Grotesque", brand, 500],
-  ...(compactShell ? [["DM Sans", withBase("/fonts/DMSans-Medium.ttf"), 500, "truetype"]] : []),
+  ["DM Sans", withBase("/fonts/DMSans-Medium.ttf"), 500, "truetype"],
 ]
   .map(
     ([family, url, weight, format = "woff2"]) =>
@@ -37,172 +37,43 @@ const fontFaces = [
     <title>{title}</title>
     <style is:inline set:html={fontFaces} />
   </head>
-  <body class:list={[{ "support-shell": support }]}>
-    <header class:list={["site-header", { "home-header": compactShell }]}>
+  <body class:list={[{ "info-shell": !home, "support-shell": support, "privacy-shell": privacy }]}>
+    <header class="site-header home-header">
       <a class="site-wordmark" href={withBase("/")}><img src={logo} width="44" height="44" alt="" />AutoLog</a>
-      {compactShell ? (
-        <nav class="home-header__nav" aria-label="Primary">
-          {support ? <a href={withBase("/")}>Home</a> : (
-            <>
-              <a href="#setup">Setup</a>
-              <a class="home-header__support" href={withBase("/support")}>Support</a>
-            </>
-          )}
-        </nav>
-      ) : (
-        <>
-          <nav class="desktop-nav" aria-label="Primary">
-            <a href={withBase("/#the-app")}>The app</a>
-            <a href={withBase("/support")}>Support</a>
-            <span>A new chapter, coming soon</span>
-          </nav>
-          <a class="mobile-nav-link" href={withBase("/")}>Back to app</a>
-        </>
-      )}
+      <nav class="home-header__nav" aria-label="Primary">
+        {home ? (
+          <>
+            <a href="#setup">Setup</a>
+            <a class="home-header__support" href={withBase("/support")}>Support</a>
+          </>
+        ) : <a href={withBase("/")}>Home</a>}
+      </nav>
     </header>
 
     <main>
       <slot />
     </main>
 
-    <footer class:list={["site-footer", { "home-footer": compactShell }]}>
+    <footer class="site-footer home-footer">
       <a class="site-footer__wordmark" href={withBase("/")}><img src={logo} width="44" height="44" alt="" />AutoLog</a>
-      {!compactShell && <p class="site-footer__line">Your drives. Your cars. Your story.</p>}
       <nav class="site-footer__links" aria-label="Footer">
         {!support && <a href={withBase("/support")}>Support</a>}
-        <a href={withBase("/privacy")}>Privacy</a>
+        {!privacy && <a href={withBase("/privacy")}>Privacy</a>}
       </nav>
     </footer>
   </body>
 </html>
 
 <style>
-  .site-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    min-height: 96px;
-    padding: 20px 80px;
-  }
-
   .site-wordmark,
   .site-footer__wordmark {
     display: inline-flex;
     align-items: center;
-    gap: 10px;
     min-height: 44px;
     font-family: var(--font-brand);
     font-weight: 500;
     line-height: 1;
     text-decoration: none;
-  }
-
-  .site-wordmark {
-    min-width: 180px;
-    font-size: 32px;
-  }
-
-  .desktop-nav {
-    display: flex;
-    align-items: center;
-    gap: 34px;
-  }
-
-  .desktop-nav a,
-  .desktop-nav span {
-    display: inline-flex;
-    align-items: center;
-    min-height: 44px;
-    font-size: 16px;
-    text-decoration: none;
-  }
-
-  .desktop-nav span {
-    width: 200px;
-    font-size: 14px;
-  }
-
-  .mobile-nav-link {
-    display: none;
-  }
-
-  .site-footer {
-    display: grid;
-    grid-template-columns: 190px 1fr 180px;
-    align-items: center;
-    min-height: 144px;
-    padding: 28px 80px;
-  }
-
-  .site-footer__wordmark {
-    font-size: 30px;
-  }
-
-  .site-footer__line {
-    justify-self: center;
-    width: 410px;
-    font-size: 16px;
-  }
-
-  .site-footer__links {
-    display: flex;
-    gap: 36px;
-    font-size: 15px;
-  }
-
-  .site-footer__links a {
-    display: inline-flex;
-    align-items: center;
-    min-height: 44px;
-    text-decoration: none;
-  }
-
-  @media (max-width: 860px) {
-    .site-header {
-      min-height: 76px;
-      padding: 16px 24px;
-    }
-
-    .site-wordmark {
-      min-width: 148px;
-      font-size: 26px;
-    }
-
-    .desktop-nav {
-      display: none;
-    }
-
-    .mobile-nav-link {
-      display: inline-flex;
-      align-items: center;
-      justify-content: flex-end;
-      min-width: 84px;
-      min-height: 44px;
-      font-size: 14px;
-      text-decoration: none;
-    }
-
-    .site-footer {
-      display: flex;
-      min-height: 0;
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 12px;
-      padding: 28px 24px 44px;
-    }
-
-    .site-footer__wordmark {
-      font-size: 25px;
-    }
-
-    .site-footer__line {
-      display: none;
-    }
-
-    .site-footer__links {
-      gap: 30px;
-      font-size: 14px;
-    }
   }
 
   .home-header,
@@ -287,16 +158,16 @@ const fontFaces = [
     min-width: 80px;
   }
 
-  .support-shell .home-header .site-wordmark {
+  .info-shell .home-header .site-wordmark {
     margin-top: -7px;
   }
 
-  .support-shell .home-header__nav {
+  .info-shell .home-header__nav {
     margin-right: 0;
   }
 
-  .support-shell .home-header__nav a,
-  .support-shell .site-footer__links a {
+  .info-shell .home-header__nav a,
+  .info-shell .site-footer__links a {
     justify-content: center;
     font-size: .9375rem;
   }
@@ -313,6 +184,24 @@ const fontFaces = [
     min-height: 100px;
     padding-bottom: 4px;
     border-top: 0;
+  }
+
+  .privacy-shell .home-header__nav a {
+    min-width: 68px;
+  }
+
+  .privacy-shell .home-footer .site-footer__links a {
+    min-width: 74px;
+  }
+
+  .privacy-shell .site-wordmark,
+  .privacy-shell .site-footer__wordmark {
+    min-width: 156px;
+  }
+
+  .privacy-shell .home-footer {
+    min-height: 98px;
+    padding-bottom: 4px;
   }
 
   @media (max-width: 860px) {
@@ -366,12 +255,16 @@ const fontFaces = [
       min-width: 54px;
     }
 
-    .support-shell .home-header .site-wordmark {
+    .info-shell .home-header .site-wordmark {
       margin-top: 0;
     }
 
     .support-shell .home-header__nav a {
       min-width: 52px;
+    }
+
+    .privacy-shell .home-footer {
+      min-height: 88px;
     }
 
     .support-shell .home-footer {
