@@ -1,179 +1,404 @@
 ---
 import Base from "../layouts/Base.astro";
+import SampleDrive from "../components/SampleDrive.astro";
 import { withBase } from "../lib/base";
+
 const image = (name: string) => withBase(`/images/living-cartography/${name}`);
+const steps = [
+  ["Connect the adapter", "Plug it into your car’s OBD2 port."],
+  ["Pair with AutoLog", "While parked, open AutoLog and connect to the adapter."],
+  ["Choose your readings", "While parked, choose which readings appear during a drive. Available readings vary by car."],
+];
 ---
 
-<Base title="AutoLog" description="A personal record of everyday drives, familiar places, and the cars you love." home={true}>
-  <section class="hero" aria-labelledby="hero-title">
-    <div class="hero__copy">
-      <p class="eyebrow">A little more to every drive.</p>
-      <h1 id="hero-title"><span class="desktop-only">Your everyday drives,<br />worth another look.</span><span class="mobile-only">Everyday drives.<br />A second look.</span></h1>
-      <p class="hero__body">A personal record of everyday drives, familiar places, and the cars you love.</p>
-      <a class="button" href={withBase('/#the-app')}>Explore AutoLog&nbsp; ↓</a>
-      <p class="preview-note">A preview of the next AutoLog.</p>
-    </div>
-    <div class="hero__art" aria-hidden="true">
-      <img class="countryside" src={image('countryside.webp')} width="393" height="295" alt="" />
-      <img class="miata" src={image('miata.png')} width="357" height="238" alt="" />
-      <p>The long way home counts, too.</p>
+<Base title="AutoLog" description="AutoLog records your drives so you can look back at the routes you took." home>
+  <SampleDrive />
+
+  <section class="history" aria-labelledby="history-title">
+    <div class="content history__layout">
+      <div class="history__intro">
+        <h2 id="history-title">Drive history by car</h2>
+        <p>AutoLog keeps a separate history for each car. These two drives belong to the same Miata.</p>
+      </div>
+      <div class="landscape" aria-hidden="true">
+        <img class="landscape__world" src={image("countryside.webp")} width="393" height="295" alt="" loading="lazy" />
+        <img class="landscape__car" src={image("miata.png")} width="357" height="238" alt="" loading="lazy" />
+      </div>
+      <div class="history__entries">
+        <dl>
+          <div><dt>Sunday detour</dt><dd>11.6 mi&nbsp; · &nbsp;27 min</dd></div>
+          <div><dt>Monday commute</dt><dd>8.4 mi&nbsp; · &nbsp;18 min</dd></div>
+        </dl>
+        <p>Sample entries</p>
+      </div>
     </div>
   </section>
 
-  <section id="the-app" class="discovery" aria-labelledby="discovery-title">
-    <div class="discovery__copy">
-      <p class="eyebrow desktop-only">There’s a story in the familiar.</p>
-      <h2 id="discovery-title">Same roads.<br />Different days.</h2>
-      <p class="desktop-only">Look back at the drives you make again and again. Notice a different route home, a longer detour, or a new corner of your own map.</p>
-      <p class="mobile-only">A different route home. A longer detour. A new corner of your own map.</p>
+  <section id="setup" class="content setup" aria-labelledby="setup-title">
+    <div class="setup__copy">
+      <h2 id="setup-title">Connecting your car</h2>
+      <p class="setup__intro">You’ll need an iPhone and a compatible Bluetooth Low Energy (BLE) OBD2 adapter.</p>
+      <ol class="steps" role="list">
+        {steps.map(([title, body], index) => (
+          <li>
+            <span class="step-number" aria-hidden="true">{index + 1}</span>
+            <div><h3>{title}</h3><p>{body}</p></div>
+          </li>
+        ))}
+      </ol>
+      <a class="compatibility" href={withBase("/support")}>Check adapter compatibility →</a>
     </div>
-    <figure class="comparison-card">
-      <h3>Two days. One route.</h3>
-      <img src={image('comparison.webp')} width="345" height="248" alt="Two matching route traces, recorded Monday 24 August and Sunday 30 August." loading="lazy" />
-      <p class="comparison-card__route">Around town to home.</p>
-      <figcaption>Illustrative drive history · Design preview</figcaption>
+    <figure class="parked">
+      <img src={image("recording.webp")} width="393" height="852" alt="AutoLog recording screen showing 18.4 miles, 36:12 elapsed, and 29.6 mpg average while safely parked." loading="lazy" />
+      <figcaption>
+        <span class="parked__desktop-caption">Example of the parked display</span>
+        <span class="parked__mobile-caption">
+          <span class="parked__title">Parked display</span>
+          <span>This example shows distance, elapsed time, and average fuel economy.</span>
+        </span>
+      </figcaption>
     </figure>
-    <div class="multi-car">
-      <h3>For every car in your life.</h3>
-      <p class="desktop-only">The daily driver and the weekend car, with a history of their own. No photos required.</p>
-      <p class="mobile-only">The daily driver and the weekend car.<br />A history of their own. No photos required.</p>
-    </div>
-  </section>
-
-  <section class="recording" aria-labelledby="recording-title">
-    <div class="recording__copy">
-      <p class="eyebrow">A view that feels like yours.</p>
-      <h2 id="recording-title">Set it up before<br />you set off.</h2>
-      <p>Put distance, elapsed time, and the readings your car supports where you want them. Change the layout while parked.</p>
-    </div>
-    <figure class="recording__preview">
-      <img src={image('recording.webp')} width="393" height="852" alt="Illustrative parked AutoLog recording screen showing 18.4 miles, 36:12 elapsed, and 29.6 mpg average." loading="lazy" />
-      <figcaption>Illustrative screen · Design preview</figcaption>
-    </figure>
-  </section>
-
-  <section class="setup" aria-labelledby="setup-title">
-    <div class="setup__intro">
-      <h2 id="setup-title">Your phone.<br />A small adapter.<br />The open road.</h2>
-      <p>A compatible BLE OBD2 adapter connects AutoLog to your car. It reads the car, never writes to it.</p>
-      <a href={withBase('/support')}>Check setup and compatibility →</a>
-    </div>
-    <div class="steps">
-      <div><h3>Plug it in.</h3><p>Connect a compatible adapter to your car’s OBD2 port.</p></div>
-      <div><h3>Pair once.</h3><p>Connect the adapter inside AutoLog while parked.</p></div>
-      <div><h3>Go about your day.</h3><p>Come back to your drives, your roads, and your cars.</p></div>
-    </div>
   </section>
 </Base>
 
 <style>
-  section { width: 100%; }
-  .mobile-only { display: none; }
-  .eyebrow { font-size: 16px; }
-  .hero { position: relative; min-height: 680px; overflow: hidden; }
-  .hero__copy { position: absolute; z-index: 2; top: 76px; left: max(80px, calc((100vw - 1440px) / 2 + 80px)); display: flex; width: 680px; flex-direction: column; align-items: flex-start; gap: 24px; }
-  .hero h1 { font-size: 72px; line-height: 80px; letter-spacing: -1.44px; }
-  .hero__body { width: 480px; font-size: 21px; line-height: 31px; }
-  .button { display: inline-flex; min-height: 52px; align-items: center; border-radius: 6px; background: var(--ink); color: var(--paper); padding: 12px 24px; font-size: 16px; text-decoration: none; }
-  .preview-note { font-size: 13px; }
-  .hero__art { position: absolute; top: 5px; left: 53.5%; width: 46.5%; height: 650px; }
-  .countryside { width: min(650px, 100%); }
-  .miata { position: absolute; top: 288px; left: 75px; width: min(518px, 80%); max-width: none; }
-  .hero__art p { position: absolute; top: 590px; left: 160px; font-family: var(--font-heading); font-size: 23px; }
-
-  .discovery { display: grid; min-height: 760px; grid-template-columns: minmax(0, 540px) minmax(0, 550px); grid-template-rows: 390px 1fr; justify-content: start; gap: 0 clamp(40px, 9vw, 130px); background: var(--sage); padding: 70px clamp(40px, 5.5vw, 80px); }
-  .discovery__copy { grid-column: 2; display: flex; flex-direction: column; gap: 26px; padding-top: 26px; font-size: 21px; line-height: 32px; }
-  .discovery__copy h2 { font-size: 64px; line-height: 68px; }
-  .comparison-card { grid-column: 1; grid-row: 1 / span 2; align-self: start; margin: 0; border-radius: 12px; background: var(--paper); padding: 38px 44px; }
-  .comparison-card h3 { margin-bottom: 24px; font-size: 40px; }
-  .comparison-card img { width: 100%; }
-  .comparison-card__route { margin-top: 24px; font-family: var(--font-heading); font-size: 29px; }
-  figcaption { margin-top: 18px; font-size: 13px; }
-  .multi-car { grid-column: 2; align-self: start; }
-  .multi-car h3 { margin-bottom: 12px; font-size: 30px; line-height: 36px; }
-  .multi-car p { width: 470px; max-width: 100%; font-size: 18px; line-height: 28px; }
-
-  .recording { display: grid; min-height: 690px; grid-template-columns: minmax(0, 550px) minmax(255px, 393px); justify-content: start; gap: clamp(40px, 20.8vw, 300px); padding: 54px clamp(40px, 5.5vw, 80px) 36px; }
-  .recording__copy { display: flex; flex-direction: column; gap: 24px; padding-top: 72px; }
-  .recording__copy h2 { font-size: 62px; line-height: 66px; }
-  .recording__copy > p:last-child { font-size: 18px; line-height: 28px; }
-  .recording__preview { width: 100%; margin: 0; }
-  .recording__preview img { width: 255px; }
-  .recording__preview figcaption { width: 300px; margin-top: 18px; font-size: 12px; }
-
-  .setup { display: grid; min-height: 560px; grid-template-columns: minmax(0, 520px) minmax(0, 510px); justify-content: start; gap: clamp(40px, 13.2vw, 190px); background: var(--sage); padding: 74px clamp(40px, 5.5vw, 80px); }
-  .setup__intro { display: flex; flex-direction: column; align-items: flex-start; gap: 22px; }
-  .setup__intro h2 { font-size: 54px; line-height: 58px; }
-  .setup__intro p { font-size: 18px; line-height: 28px; }
-  .setup__intro a { display: inline-flex; min-height: 44px; align-items: center; font-size: 16px; text-decoration: none; }
-  .steps { display: flex; flex-direction: column; gap: 46px; padding-top: 6px; }
-  .steps div { display: flex; flex-direction: column; gap: 12px; }
-  .steps h3 { font-size: 31px; }
-  .steps p { font-size: 18px; line-height: 28px; }
-
-  @media (max-width: 1350px) {
-    .desktop-only { display: none; }
-    .mobile-only { display: inline; }
-    .hero { display: flex; min-height: 672px; flex-direction: column; padding: 16px 24px 0; }
-    .hero__copy { position: static; width: 100%; gap: 16px; }
-    .eyebrow { font-size: 13px; }
-    .hero h1 { font-size: 46px; line-height: 48px; letter-spacing: -.92px; }
-    .hero__body { width: min(329px, 100%); font-size: 17px; line-height: 25px; }
-    .button { min-height: 49px; padding: 10px 22px; font-size: 15px; }
-    .preview-note { font-size: 12px; }
-    .hero__art { position: relative; top: auto; left: auto; width: min(720px, 100%); height: auto; aspect-ratio: 342 / 323; margin-top: 18px; }
-    .countryside { width: 100%; }
-    .miata { top: 41.8%; left: 26%; width: 83%; }
-    .hero__art p { display: none; }
-
-    .discovery { display: flex; min-height: 788px; flex-direction: column; gap: 0; padding: 36px 24px 32px; }
-    .discovery__copy { order: 1; gap: 18px; padding: 0; font-size: 17px; line-height: 26px; }
-    .discovery__copy h2 { font-size: 44px; line-height: 46px; }
-    .comparison-card { order: 2; margin-top: 56px; padding: 24px 28px; border-radius: 8px; }
-    .comparison-card h3 { margin-bottom: 15px; font-size: 25px; }
-    .comparison-card__route { margin-top: 15px; font-size: 18px; }
-    .comparison-card figcaption { margin-top: 12px; font-size: 12px; }
-    .multi-car { order: 3; padding-top: 28px; }
-    .multi-car h3 { margin-bottom: 12px; font-size: 27px; line-height: normal; }
-    .multi-car p { width: 100%; font-size: 15px; line-height: 23px; }
-
-    .recording { display: flex; min-height: 985px; flex-direction: column; justify-content: flex-start; gap: 0; padding: 42px 24px 32px; }
-    .recording__copy { gap: 24px; padding: 0; }
-    .recording__copy .eyebrow { font-size: 15px; }
-    .recording__copy h2 { font-size: 43px; line-height: 47px; }
-    .recording__copy > p:last-child { font-size: 18px; line-height: 28px; }
-    .recording__preview { width: 100%; margin-top: 44px; }
-    .recording__preview img { width: 252px; margin-inline: auto; }
-    .recording__preview figcaption { width: 252px; margin: 18px auto 0; }
-
-    .setup { display: flex; min-height: 820px; flex-direction: column; gap: 0; padding: 42px 24px 48px; }
-    .setup__intro { gap: 22px; }
-    .setup__intro h2 { font-size: 40px; line-height: 44px; }
-    .setup__intro p { font-size: 18px; line-height: 28px; }
-    .steps { gap: 45px; padding-top: 65px; }
-    .steps h3 { font-size: 27px; line-height: 33px; }
-    .steps p { font-size: 17px; line-height: 26px; }
+  .content {
+    width: min(87.5%, 1260px);
+    margin-inline: auto;
   }
 
-  @media (min-width: 861px) and (max-width: 1350px) {
-    .desktop-only { display: inline; }
-    .mobile-only { display: none; }
-    .hero { min-height: 0; padding: 56px clamp(40px, 7vw, 80px) 52px; }
-    .hero__copy { width: min(680px, 100%); }
-    .hero h1 { font-size: clamp(54px, 6vw, 68px); line-height: 1.08; }
-    .hero__art { margin-inline: auto; margin-top: 40px; margin-bottom: 36px; }
-    .hero__art p { display: block; top: auto; right: 0; bottom: -36px; left: auto; }
-    .discovery { align-items: center; }
-    .discovery > *, .recording > *, .setup > * { width: min(800px, 100%); }
-    .discovery > .comparison-card { width: min(540px, 100%); }
-    .recording, .setup { align-items: center; }
-    .recording__preview img { width: 255px; }
-    .recording__preview figcaption { width: 300px; }
+  .history,
+  .parked {
+    background: #e6ebdd;
   }
 
-  @media (max-width: 360px) {
-    .hero h1 { font-size: 41px; line-height: 44px; }
-    .comparison-card { padding-inline: 20px; }
-    .setup__intro h2 { font-size: 36px; line-height: 40px; }
+  .history__layout {
+    display: grid;
+    grid-template-columns: minmax(0, 638fr) minmax(0, 537fr);
+    grid-template-rows: auto 1fr;
+    column-gap: 6.75%;
+    padding-block: 42px;
+  }
+
+  .history__intro,
+  .history__entries {
+    grid-column: 2;
+  }
+
+  .history__intro {
+    padding-top: 26px;
+  }
+
+  .history__intro h2,
+  .setup h2 {
+    font-size: 3.0625rem;
+    line-height: 1.14;
+  }
+
+  .history__intro p {
+    max-width: 475px;
+    margin-top: 11px;
+    font-size: 1.1875rem;
+    line-height: 1.475;
+  }
+
+  .landscape {
+    position: relative;
+    grid-area: 1 / 1 / span 2 / 2;
+    align-self: center;
+    overflow: hidden;
+    aspect-ratio: 638 / 428;
+    border-radius: 12px;
+  }
+
+  .landscape img {
+    position: absolute;
+  }
+
+  .landscape__world {
+    top: -7.94%;
+    width: 100%;
+  }
+
+  .landscape__car {
+    top: 37.38%;
+    left: 43.42%;
+    width: 58%;
+  }
+
+  .history__entries {
+    width: min(100%, 511px);
+    margin-top: 57px;
+  }
+
+  .history__entries dl,
+  .history__entries dd {
+    margin: 0;
+  }
+
+  .history__entries dl > div {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 2px 8px;
+    min-height: 67px;
+    padding-block: 12px;
+    border-top: 1px solid var(--rule);
+  }
+
+  .history__entries dt {
+    font-size: 1.3125rem;
+    font-weight: 500;
+  }
+
+  .history__entries dd {
+    font-size: 1.125rem;
+  }
+
+  .history__entries p,
+  .step-number,
+  .parked__desktop-caption {
+    color: #52665b;
+  }
+
+  .history__entries p {
+    margin-top: 8px;
+    font-size: .875rem;
+  }
+
+  .setup {
+    display: grid;
+    grid-template-columns: minmax(0, 590fr) minmax(0, 546fr);
+    align-items: start;
+    gap: 9.76%;
+    padding-block: 55px 59px;
+  }
+
+  .setup__copy {
+    padding-top: 16px;
+  }
+
+  .setup h2 {
+    font-size: 3.125rem;
+  }
+
+  .setup__intro {
+    max-width: 562px;
+    margin-top: 22px;
+    font-size: 1.25rem;
+    line-height: 1.5;
+  }
+
+  .steps {
+    margin: 53px 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .steps li {
+    display: grid;
+    grid-template-columns: 24px minmax(0, 1fr);
+    gap: 12px;
+    min-height: 92px;
+    padding-top: 9px;
+    border-top: 1px solid var(--rule);
+  }
+
+  .step-number {
+    padding-top: 3px;
+    font-size: 1.1875rem;
+    font-weight: 500;
+  }
+
+  .steps h3 {
+    font: 500 1.375rem/1.32 var(--font-body);
+  }
+
+  .steps p {
+    margin-top: 5px;
+    font-size: 1.0625rem;
+    line-height: 1.412;
+  }
+
+  .compatibility {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    margin-top: 42px;
+    font-weight: 500;
+    text-decoration: none;
+  }
+
+  .compatibility:hover {
+    text-decoration: underline;
+  }
+
+  .parked {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0;
+    padding: 31px 16px 32px;
+    border-radius: 14px;
+    text-align: center;
+  }
+
+  .parked img {
+    width: min(216px, 82%);
+  }
+
+  .parked figcaption {
+    margin-top: 22px;
+    font-size: 1.0625rem;
+    line-height: 1.53;
+  }
+
+  .parked__mobile-caption {
+    display: none;
+  }
+
+  @media (max-width: 860px) {
+    .content {
+      width: min(calc(100% - 40px), 634px);
+    }
+
+    .history__layout,
+    .setup {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .history__layout {
+      padding-block: 32px 37px;
+    }
+
+    .history__intro,
+    .setup__copy {
+      padding-top: 0;
+    }
+
+    .history__intro h2,
+    .setup h2 {
+      font-size: 2.1875rem;
+      line-height: 1.2;
+    }
+
+    .history__intro p,
+    .setup__intro {
+      max-width: none;
+      margin-top: 9px;
+      font-size: 1rem;
+      line-height: 1.4375;
+    }
+
+    .history__intro {
+      min-height: 120px;
+    }
+
+    .landscape {
+      width: 100%;
+      aspect-ratio: 350 / 177;
+      margin-top: 17px;
+    }
+
+    .landscape__world {
+      top: -31.64%;
+    }
+
+    .landscape__car {
+      top: 34.46%;
+      left: 42.28%;
+      width: 59.14%;
+    }
+
+    .history__entries {
+      width: 100%;
+      margin-top: 25px;
+    }
+
+    .history__entries dl > div {
+      min-height: 58px;
+    }
+
+    .history__entries dt {
+      font-size: 1.0625rem;
+    }
+
+    .history__entries dd {
+      font-size: .9375rem;
+    }
+
+    .history__entries p {
+      margin-top: 12px;
+      font-size: .8125rem;
+    }
+
+    .setup {
+      gap: 36px;
+      padding-block: 34px 38px;
+    }
+
+    .steps {
+      margin-top: 38px;
+    }
+
+    .steps li {
+      min-height: 86px;
+      padding-bottom: 20px;
+    }
+
+    .step-number {
+      font-size: 1rem;
+    }
+
+    .steps h3 {
+      font-size: 1.125rem;
+    }
+
+    .steps p {
+      margin-top: 3px;
+      font-size: .9375rem;
+      line-height: 1.3334;
+    }
+
+    .compatibility {
+      margin-top: 24px;
+    }
+
+    .parked {
+      display: grid;
+      grid-template-columns: minmax(0, 115px) minmax(0, 181px);
+      justify-content: center;
+      align-items: center;
+      align-self: stretch;
+      gap: 17px;
+      padding: 17px 23px 17px 14px;
+      text-align: left;
+    }
+
+    .parked img {
+      width: 100%;
+    }
+
+    .parked figcaption {
+      margin: 0;
+      font-size: .9375rem;
+      line-height: 1.4;
+    }
+
+    .parked__desktop-caption {
+      display: none;
+    }
+
+    .parked__mobile-caption {
+      display: block;
+    }
+
+    .parked__title {
+      display: block;
+      margin-bottom: 10px;
+      font: 400 1.5rem/1.2 var(--font-heading);
+    }
   }
 </style>
