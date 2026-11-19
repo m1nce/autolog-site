@@ -1,0 +1,3 @@
+# Support page design and implementation spec
+
+Implement the approved 1440 px desktop and 390 px mobile Support frames in Figma file Cc8gZIMvqyxI3YHW2Kh5bf, nodes 2012:3 and 2012:130. Keep their wording, order, type, paper and sage colors, connector drawing, and header and footer. Both pages show the same compatibility details, three setup steps, and two connection-help answers. The desktop places compatibility beside setup. Mobile stacks them and provides native jump links. Link Home and Privacy through the existing deployment base. Keep fonts and images local. Render content and navigation without JavaScript. The change is limited to Support. Leave deployment for later.
