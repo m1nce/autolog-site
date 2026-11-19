@@ -6,9 +6,11 @@ interface Props {
   title: string;
   description: string;
   home?: boolean;
+  support?: boolean;
 }
 
-const { title, description, home = false } = Astro.props;
+const { title, description, home = false, support = false } = Astro.props;
+const compactShell = home || support;
 const newsreader = withBase("/fonts/Newsreader-Regular.woff2");
 const dmSans = withBase("/fonts/DMSans-Regular.woff2");
 const brand = withBase("/fonts/BricolageGrotesque-Medium.woff2");
@@ -17,7 +19,7 @@ const fontFaces = [
   ["Newsreader", newsreader, 400],
   ["DM Sans", dmSans, 400],
   ["Bricolage Grotesque", brand, 500],
-  ...(home ? [["DM Sans", withBase("/fonts/DMSans-Medium.ttf"), 500, "truetype"]] : []),
+  ...(compactShell ? [["DM Sans", withBase("/fonts/DMSans-Medium.ttf"), 500, "truetype"]] : []),
 ]
   .map(
     ([family, url, weight, format = "woff2"]) =>
@@ -35,13 +37,17 @@ const fontFaces = [
     <title>{title}</title>
     <style is:inline set:html={fontFaces} />
   </head>
-  <body>
-    <header class:list={["site-header", { "home-header": home }]}>
+  <body class:list={[{ "support-shell": support }]}>
+    <header class:list={["site-header", { "home-header": compactShell }]}>
       <a class="site-wordmark" href={withBase("/")}><img src={logo} width="44" height="44" alt="" />AutoLog</a>
-      {home ? (
+      {compactShell ? (
         <nav class="home-header__nav" aria-label="Primary">
-          <a href="#setup">Setup</a>
-          <a class="home-header__support" href={withBase("/support")}>Support</a>
+          {support ? <a href={withBase("/")}>Home</a> : (
+            <>
+              <a href="#setup">Setup</a>
+              <a class="home-header__support" href={withBase("/support")}>Support</a>
+            </>
+          )}
         </nav>
       ) : (
         <>
@@ -59,11 +65,11 @@ const fontFaces = [
       <slot />
     </main>
 
-    <footer class:list={["site-footer", { "home-footer": home }]}>
+    <footer class:list={["site-footer", { "home-footer": compactShell }]}>
       <a class="site-footer__wordmark" href={withBase("/")}><img src={logo} width="44" height="44" alt="" />AutoLog</a>
-      {!home && <p class="site-footer__line">Your drives. Your cars. Your story.</p>}
+      {!compactShell && <p class="site-footer__line">Your drives. Your cars. Your story.</p>}
       <nav class="site-footer__links" aria-label="Footer">
-        <a href={withBase("/support")}>Support</a>
+        {!support && <a href={withBase("/support")}>Support</a>}
         <a href={withBase("/privacy")}>Privacy</a>
       </nav>
     </footer>
@@ -281,6 +287,34 @@ const fontFaces = [
     min-width: 80px;
   }
 
+  .support-shell .home-header .site-wordmark {
+    margin-top: -7px;
+  }
+
+  .support-shell .home-header__nav {
+    margin-right: 0;
+  }
+
+  .support-shell .home-header__nav a,
+  .support-shell .site-footer__links a {
+    justify-content: center;
+    font-size: .9375rem;
+  }
+
+  .support-shell .home-header__nav a {
+    min-width: 72px;
+  }
+
+  .support-shell .home-footer .site-footer__links a {
+    min-width: 68px;
+  }
+
+  .support-shell .home-footer {
+    min-height: 100px;
+    padding-bottom: 4px;
+    border-top: 0;
+  }
+
   @media (max-width: 860px) {
     .home-header,
     .home-footer {
@@ -330,6 +364,19 @@ const fontFaces = [
 
     .home-footer .site-footer__links a {
       min-width: 54px;
+    }
+
+    .support-shell .home-header .site-wordmark {
+      margin-top: 0;
+    }
+
+    .support-shell .home-header__nav a {
+      min-width: 52px;
+    }
+
+    .support-shell .home-footer {
+      min-height: 90px;
+      padding: 2px 0 0;
     }
   }
 </style>

@@ -4,10 +4,29 @@ import { readFile } from 'node:fs/promises';
 const support = await readFile('dist/support/index.html', 'utf8');
 const privacy = await readFile('dist/privacy/index.html', 'utf8');
 
-assert.match(support, /A little help,/);
-assert.equal((support.match(/<h2[\s>]/g) ?? []).length, 6);
-assert.doesNotMatch(support, /<details|TESTFLIGHT BUILD|hello@|\$15|Weeks of parking are fine/);
-assert.doesNotMatch(support, /<a[^>]+>Privacy page<\/a>/);
+const supportText = support.replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ');
+for (const phrase of [
+  'Connecting an OBD2 adapter',
+  'Check which adapter works with AutoLog and how to pair it with your iPhone.',
+  'Adapter compatibility', 'Look for both details in the adapter’s manual or product listing.',
+  'OBD2 connector', 'Adapter type', 'ELM327-compatible OBD2',
+  'Bluetooth Low Energy (BLE)', 'Adapters that use only Bluetooth Classic or Wi-Fi won’t connect to AutoLog.',
+  'Setup steps', 'Connect the adapter',
+  'While parked, plug the adapter into your car’s OBD2 port and turn the ignition on.',
+  'Pair with AutoLog', 'Open AutoLog and choose Pair adapter for your car. When your adapter appears, tap Pair next to its name.',
+  'Wait for confirmation', 'Keep the ignition on while AutoLog checks the connection. When you see “Adapter paired,” the adapter is saved for that car.',
+  'Connection help', 'My adapter doesn’t appear',
+  'Check that Bluetooth is on and that AutoLog has Bluetooth access in iPhone Settings. Keep the ignition on, then tap Look again in AutoLog.',
+  'The first connection is taking a while', 'Some cars use a slower connection. Leave the pairing screen open while the adapter checks how to communicate with your car.',
+]) assert.ok(supportText.includes(phrase), phrase);
+for (const id of ['compatibility', 'setup-steps']) {
+  assert.ok(support.includes('href="#' + id + '"'), 'Missing jump link to ' + id);
+  assert.ok(support.includes('id="' + id + '"'), 'Missing destination ' + id);
+}
+const diagram = 'images/support/obd2-connector.svg';
+assert.ok(support.includes('/autolog-site/' + diagram));
+assert.match(await readFile('dist/' + diagram, 'utf8'), /<svg\b/);
+assert.doesNotMatch(support, /A little help,|<details|TESTFLIGHT BUILD|hello@|\$15|Weeks of parking are fine/);
 assert.match(privacy, /22 August 2026/);
 
 const text = privacy

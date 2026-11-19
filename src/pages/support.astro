@@ -1,33 +1,188 @@
 ---
 import Base from "../layouts/Base.astro";
+import { withBase } from "../lib/base";
+
+const description = "Check which adapter works with AutoLog and how to pair it with your iPhone.";
 ---
 
-<Base title="Support · AutoLog" description="Connecting your car, recording a drive, and knowing where your data goes.">
-  <article class="reading-page">
-    <header class="introduction">
+<Base title="Support · AutoLog" description={description} support>
+  <article class="support">
+    <header class="wrap intro">
       <p class="eyebrow">Support</p>
-      <h1>A little help,<br />and you’re off.</h1>
-      <p class="lede">Connecting your car, recording a drive, and knowing where your data goes.</p>
+      <h1>Connecting an OBD2 adapter</h1>
+      <p class="lede">{description}</p>
+      <nav class="jump-links" aria-label="On this page">
+        <a href="#compatibility">Adapter compatibility</a>
+        <a href="#setup-steps">Setup steps</a>
+      </nav>
     </header>
-    <section><h2>Which adapters work?</h2><p>Use a compatible Bluetooth Low Energy (BLE) ELM327 adapter. Classic Bluetooth and Wi-Fi-only adapters aren’t supported.</p></section>
-    <section><h2>Why does the first connection take a while?</h2><p>Some older cars use a slower protocol. The adapter tries the available protocols until the car answers. Give the first connection time to finish before trying again.</p></section>
-    <section><h2>Does AutoLog clear fault codes?</h2><p>No. AutoLog reads live data and reports the faults it sees. It never clears a code or writes anything to the car.</p></section>
-    <section><h2>What about EVs and hybrids?</h2><p>AutoLog uses the signals your car provides. A hybrid keeps its engine-off miles; an EV gets a display without fuel calculations. Available readings vary by car.</p></section>
-    <section><h2>What if I’m parking for a while?</h2><p>Power draw depends on your adapter and car. Follow your adapter maker’s storage guidance and unplug the adapter for extended parking.</p></section>
-    <section><h2>Where does my data live?</h2><p>On your phone. No account, no AutoLog server, and no analytics. VIN decoding and road-geometry lookups use external services; the Privacy page explains them.</p></section>
+
+    <div class="wrap overview">
+      <section class="compatibility" id="compatibility" aria-labelledby="compatibility-heading">
+        <h2 id="compatibility-heading">Adapter compatibility</h2>
+        <p>Look for both details in the adapter’s manual or product listing.</p>
+        <figure>
+          <img src={withBase("/images/support/obd2-connector.svg")} width="210" height="115" alt="" />
+          <figcaption>OBD2 connector</figcaption>
+        </figure>
+        <dl>
+          <div><dt>Adapter type</dt><dd>ELM327-compatible OBD2</dd></div>
+          <div><dt>Connection</dt><dd>Bluetooth Low Energy (BLE)</dd></div>
+        </dl>
+        <p class="compatibility-note">Adapters that use only Bluetooth Classic or Wi-Fi won’t connect to AutoLog.</p>
+      </section>
+
+      <section class="steps" id="setup-steps" aria-labelledby="steps-heading">
+        <h2 id="steps-heading">Setup steps</h2>
+        <ol role="list">
+          <li>
+            <h3>Connect the adapter</h3>
+            <p>While parked, plug the adapter into your car’s OBD2 port and turn the ignition on.</p>
+          </li>
+          <li>
+            <h3>Pair with AutoLog</h3>
+            <p>Open AutoLog and choose Pair adapter for your car. When your adapter appears, tap Pair next to its name.</p>
+          </li>
+          <li>
+            <h3>Wait for confirmation</h3>
+            <p>Keep the ignition on while AutoLog checks the connection. When you see “Adapter paired,” the adapter is saved for that car.</p>
+          </li>
+        </ol>
+      </section>
+    </div>
+
+    <section class="help" aria-labelledby="help-heading">
+      <div class="wrap help-layout">
+        <h2 id="help-heading">Connection help</h2>
+        <div>
+          <div class="answer">
+            <h3>My adapter doesn’t appear</h3>
+            <p>Check that Bluetooth is on and that AutoLog has Bluetooth access in iPhone Settings. Keep the ignition on, then tap Look again in AutoLog.</p>
+          </div>
+          <div class="answer">
+            <h3>The first connection is taking a while</h3>
+            <p>Some cars use a slower connection. Leave the pairing screen open while the adapter checks how to communicate with your car.</p>
+          </div>
+        </div>
+      </div>
+    </section>
   </article>
 </Base>
 
 <style>
-  .introduction { display: flex; flex-direction: column; gap: 18px; }
-  .eyebrow { font-size: 15px; }
-  h1 { font-size: 68px; line-height: 72px; }
-  .lede { font-size: 18px; line-height: 28px; }
-  section { display: flex; flex-direction: column; gap: 12px; padding-top: 24px; border-top: 1px solid var(--rule); }
-  h2 { font-size: 30px; line-height: 36px; }
-  section p { font-size: 17px; line-height: 27px; }
+  .support {
+    --muted: #52665b;
+    font-size: 1.125rem;
+    line-height: 1.625rem;
+    overflow-wrap: anywhere;
+  }
+
+  .wrap {
+    width: min(87.5%, 1260px);
+    margin-inline: auto;
+  }
+
+  .intro { padding-block: 47px 43px; }
+  .eyebrow, dt, figcaption, li::before { color: var(--muted); }
+  .eyebrow { font-size: 1rem; font-weight: 500; line-height: 1.25rem; }
+  h1 { margin: 15px 0 12px; font-size: 4.1875rem; line-height: 4.75rem; }
+  .lede { max-width: 920px; font-size: 1.3125rem; line-height: 1.875rem; }
+  .jump-links { display: none; }
+
+  .overview {
+    display: grid;
+    grid-template-columns: minmax(0, 526fr) minmax(0, 646fr);
+    gap: min(6.12vw, 88px);
+    align-items: start;
+    padding-bottom: 50px;
+  }
+
+  .compatibility {
+    padding: 32px;
+    border-radius: 14px;
+    background: #e6ebdd;
+  }
+
+  .compatibility h2 { margin-bottom: 16px; font-size: 2.5625rem; line-height: 2.875rem; }
+  figure { margin: 18px 0 22px; text-align: center; }
+  figure img { width: 210px; margin-inline: auto; aspect-ratio: 11 / 6; }
+  figcaption, dt { font-size: .875rem; line-height: 1.125rem; }
+  figcaption { margin-top: 1px; }
+  dl { margin: 0; border-bottom: 1px solid var(--rule); font-weight: 500; }
+  dl > div { padding: 8px 0 10px; border-top: 1px solid var(--rule); }
+  dd { margin: 2px 0 0; font-size: 1.25rem; line-height: 1.6875rem; }
+  .compatibility-note { margin-top: 13px; font-size: 1.0625rem; line-height: 1.5rem; }
+
+  .steps { padding-top: 4px; }
+  .steps h2 { font-size: 2.8125rem; line-height: 3.25rem; }
+  h3 { font-family: var(--font-body); font-weight: 500; }
+  ol { margin: 18px 0 0; padding: 0; list-style: none; }
+  li {
+    position: relative;
+    padding: 12px 0 23px 2.8125rem;
+    border-top: 1px solid var(--rule);
+  }
+  li::before {
+    position: absolute;
+    left: 0;
+    top: 16px;
+    content: counter(list-item) / "";
+    font-weight: 500;
+    line-height: 1.5rem;
+  }
+  li h3 { font-size: 1.5rem; line-height: 2rem; }
+  li p { margin-top: 5px; max-width: 575px; line-height: 1.6875rem; }
+
+  .help { padding: 50px 0 41px; background: #edefe5; }
+  .help-layout { display: grid; grid-template-columns: 42.0635% minmax(0, 690px); }
+  .help h2 { margin-top: 3px; font-size: 2.75rem; line-height: 3.25rem; }
+  .answer { padding-top: 14px; border-top: 1px solid var(--rule); }
+  .answer + .answer { margin-top: 25px; }
+  .answer h3 { margin-bottom: 6px; font-size: 1.375rem; line-height: 1.8125rem; }
+
   @media (max-width: 860px) {
-    h1 { font-size: 44px; line-height: 48px; }
-    h2 { font-size: 26px; line-height: 31px; }
+    .support { font-size: 1rem; line-height: 1.4375rem; }
+    .wrap { width: min(calc(100% - 40px), 634px); }
+    .intro { padding-block: 24px 26px; }
+    .eyebrow { font-size: .875rem; }
+    h1 { margin: 8px 0 10px; font-size: 2.5625rem; line-height: 2.8125rem; }
+    .lede { font-size: 1.0625rem; line-height: 1.5rem; }
+    .jump-links { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 18px; }
+    .jump-links a {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 44px;
+      padding: 8px 12px;
+      max-width: 100%;
+      width: 185px;
+      border: 1px solid #98a99b;
+      border-radius: 8px;
+      font-size: .9375rem;
+      font-weight: 500;
+      text-align: center;
+      text-decoration: none;
+    }
+    .jump-links a:last-child { width: 124px; }
+    .jump-links a:hover { text-decoration: underline; }
+    .overview { grid-template-columns: 1fr; gap: 36px; padding-bottom: 24px; }
+    .compatibility { padding: 22px 20px 20px; }
+    .compatibility h2 { margin-bottom: 12px; font-size: 1.875rem; line-height: 2.125rem; }
+    figure { margin: 14px 0 16px; }
+    figure img { width: 173px; }
+    figcaption, dt { font-size: .8125rem; }
+    dd { font-size: 1.0625rem; line-height: 1.4375rem; }
+    .compatibility-note { font-size: .9375rem; line-height: 1.3125rem; }
+    .steps { padding: 0; }
+    .steps h2, .help h2 { font-size: 2.125rem; line-height: 2.4375rem; }
+    ol { margin-top: 15px; }
+    li { padding-left: 2.1875rem; padding-bottom: 19px; }
+    li h3 { font-size: 1.25rem; line-height: 1.6875rem; }
+    li p { line-height: 1.4375rem; }
+    .help { padding-block: 30px 31px; }
+    .help-layout { grid-template-columns: minmax(0, 1fr); gap: 23px; }
+    .help h2 { margin: 0; }
+    .answer + .answer { margin-top: 21px; }
+    .answer h3 { font-size: 1.1875rem; line-height: 1.5625rem; }
   }
 </style>
