@@ -17,10 +17,11 @@ const fontFaces = [
   ["Newsreader", newsreader, 400],
   ["DM Sans", dmSans, 400],
   ["Bricolage Grotesque", brand, 500],
+  ...(home ? [["DM Sans", withBase("/fonts/DMSans-Medium.ttf"), 500, "truetype"]] : []),
 ]
   .map(
-    ([family, url, weight]) =>
-      `@font-face{font-family:'${family}';src:url('${url}') format('woff2');font-weight:${weight};font-style:normal;font-display:swap}`,
+    ([family, url, weight, format = "woff2"]) =>
+      `@font-face{font-family:'${family}';src:url('${url}') format('${format}');font-weight:${weight};font-style:normal;font-display:swap}`,
   )
   .join("\n");
 ---
@@ -35,26 +36,32 @@ const fontFaces = [
     <style is:inline set:html={fontFaces} />
   </head>
   <body>
-    <header class="site-header">
+    <header class:list={["site-header", { "home-header": home }]}>
       <a class="site-wordmark" href={withBase("/")}><img src={logo} width="44" height="44" alt="" />AutoLog</a>
-      <nav class="desktop-nav" aria-label="Primary">
-        <a href={withBase("/#the-app")}>The app</a>
-        <a href={withBase("/support")}>Support</a>
-        <span>A new chapter, coming soon</span>
-      </nav>
-      <a
-        class="mobile-nav-link"
-        href={home ? withBase("/#the-app") : withBase("/")}
-      >{home ? "The app ↓" : "Back to app"}</a>
+      {home ? (
+        <nav class="home-header__nav" aria-label="Primary">
+          <a href="#setup">Setup</a>
+          <a class="home-header__support" href={withBase("/support")}>Support</a>
+        </nav>
+      ) : (
+        <>
+          <nav class="desktop-nav" aria-label="Primary">
+            <a href={withBase("/#the-app")}>The app</a>
+            <a href={withBase("/support")}>Support</a>
+            <span>A new chapter, coming soon</span>
+          </nav>
+          <a class="mobile-nav-link" href={withBase("/")}>Back to app</a>
+        </>
+      )}
     </header>
 
     <main>
       <slot />
     </main>
 
-    <footer class="site-footer">
+    <footer class:list={["site-footer", { "home-footer": home }]}>
       <a class="site-footer__wordmark" href={withBase("/")}><img src={logo} width="44" height="44" alt="" />AutoLog</a>
-      <p class="site-footer__line">Your drives. Your cars. Your story.</p>
+      {!home && <p class="site-footer__line">Your drives. Your cars. Your story.</p>}
       <nav class="site-footer__links" aria-label="Footer">
         <a href={withBase("/support")}>Support</a>
         <a href={withBase("/privacy")}>Privacy</a>
@@ -189,6 +196,140 @@ const fontFaces = [
     .site-footer__links {
       gap: 30px;
       font-size: 14px;
+    }
+  }
+
+  .home-header,
+  .home-footer {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    width: min(87.5%, 1260px);
+    margin-inline: auto;
+    padding: 0;
+    gap: 12px;
+  }
+
+  .home-header {
+    min-height: 78px;
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .home-header .site-wordmark,
+  .home-footer .site-footer__wordmark {
+    min-width: 0;
+    gap: 5px;
+    font-size: 1.6875rem;
+  }
+
+  .home-header .site-wordmark {
+    margin-left: -4px;
+  }
+
+  .home-header img,
+  .home-footer img {
+    width: 39px;
+  }
+
+  .home-header__nav,
+  .home-footer .site-footer__links {
+    display: flex;
+    align-items: center;
+    font-size: 1rem;
+    font-weight: 500;
+  }
+
+  .home-header__nav {
+    gap: 50px;
+    margin-right: 42px;
+  }
+
+  .home-header__nav a,
+  .home-footer .site-footer__links a {
+    display: inline-flex;
+    align-items: center;
+    min-width: 44px;
+    min-height: 44px;
+    text-decoration: none;
+  }
+
+  .home-header__nav a {
+    min-width: 66px;
+  }
+
+  .home-header__nav .home-header__support {
+    min-width: 88px;
+  }
+
+  .home-header__nav a:hover,
+  .home-footer .site-footer__links a:hover {
+    text-decoration: underline;
+  }
+
+  .home-footer {
+    min-height: 116px;
+    border-top: 1px solid var(--rule);
+    padding-bottom: 8px;
+  }
+
+  .home-footer .site-footer__links {
+    gap: 60px;
+  }
+
+  .home-footer .site-footer__links a {
+    min-width: 80px;
+  }
+
+  @media (max-width: 860px) {
+    .home-header,
+    .home-footer {
+      width: min(calc(100% - 40px), 634px);
+    }
+
+    .home-header {
+      min-height: 60px;
+      padding-bottom: 4px;
+    }
+
+    .home-footer {
+      min-height: 94px;
+      padding-bottom: 4px;
+    }
+
+    .home-header .site-wordmark,
+    .home-footer .site-footer__wordmark {
+      gap: 4px;
+      font-size: 1.4375rem;
+    }
+
+    .home-header img,
+    .home-footer img {
+      width: 32px;
+    }
+
+    .home-header__nav,
+    .home-footer .site-footer__links {
+      margin-right: 0;
+      font-size: .875rem;
+    }
+
+    .home-header__nav .home-header__support {
+      display: none;
+    }
+
+    .home-header__nav a {
+      min-width: 51px;
+    }
+
+    .home-footer .site-footer__links {
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      gap: 0 min(10vw, 40px);
+    }
+
+    .home-footer .site-footer__links a {
+      min-width: 54px;
     }
   }
 </style>
