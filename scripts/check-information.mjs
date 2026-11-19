@@ -27,20 +27,27 @@ const diagram = 'images/support/obd2-connector.svg';
 assert.ok(support.includes('/autolog-site/' + diagram));
 assert.match(await readFile('dist/' + diagram, 'utf8'), /<svg\b/);
 assert.doesNotMatch(support, /A little help,|<details|TESTFLIGHT BUILD|hello@|\$15|Weeks of parking are fine/);
-assert.match(privacy, /22 August 2026/);
 
-const text = privacy
-  .replace(/<[^>]*>/g, ' ')
-  .replace(/&#39;|&#x27;|&apos;/g, "'")
-  .replace(/\s+/g, ' ');
-
+const privacyText = privacy.replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ');
 for (const paragraph of [
-  'Trips, stats, and everything the app knows about your car are stored on your phone. There is no account, no sign-in, no analytics, and no AutoLog server. Delete the app and the data goes with it.',
-  'Both are best effort and silent. When they fail, the app skips them and moves on.',
-  "Your VIN is sent once to the NHTSA vPIC API, a US government service, to identify the car's make, model, and year. Nothing else is attached to the request.",
-  "After a trip, the bounding box of the trip's area is sent to the Overpass API, an OpenStreetMap service, to fetch road shapes and names. The route you drove stays on the phone.",
-  'It never uploads a route, never sells or shares driving data, and never scores your driving. There is no third party code in the app at all.',
-]) assert.ok(text.includes(paragraph), paragraph);
-
-assert.doesNotMatch(privacy, /hello@|Write to the engineer/);
+  'AutoLog saves your driving history on your iPhone. Some features use outside services, and you can choose to share a trip yourself.',
+  'AutoLog keeps the trip record in the app on your phone. You can record drives without an AutoLog account.',
+  'If you choose VIN lookup, AutoLog sends your vehicle identification number (VIN) to the U.S. National Highway Traffic Safety Administration’s vPIC service to find the make, model, and year. You can also enter those details yourself.',
+  'When AutoLog needs road data, it sends the boundaries of the trip area to the Overpass API for OpenStreetMap road names and shapes. AutoLog matches those roads to your recorded route on your iPhone.',
+  'AutoLog uses Apple services to load the map area and look up place names from coordinates. For a travel-time estimate, it sends Apple the trip’s start and end coordinates after the drive or when you open its details.',
+  'A card can show your route and caption. Review both before sharing. On eligible routes, you can trim the ends of the route image. Place names in the caption are edited separately.',
+  'A single-trip CSV can include timestamps, car readings, and exact GPS coordinates. A vehicle CSV contains trip summaries. A diagnostic log contains the adapter’s responses. You choose where to send or save the file.',
+  'AutoLog uses location to record a drive. Allowing background location lets it record routes when drives start automatically. You can change this in iPhone Settings.',
+  'Depending on your settings, iCloud Backup can include AutoLog data. Deleting AutoLog removes its local data. Copies you have shared or backed up are managed separately.',
+  'The sample drive uses example data. GitHub Pages hosts the site and logs visitors’ IP addresses for security.',
+]) assert.ok(privacyText.includes(paragraph), paragraph);
+for (const id of ['on-your-iphone', 'online-requests', 'sharing']) {
+  assert.ok(privacy.includes('href="#' + id + '"'), 'Missing jump link to ' + id);
+  assert.ok(privacy.includes('id="' + id + '"'), 'Missing destination ' + id);
+}
+for (const url of [
+  'https://www.apple.com/legal/privacy/data/en/apple-maps/',
+  'https://support.apple.com/en-us/108770',
+  'https://docs.github.com/en/pages/getting-started-with-github-pages/what-is-github-pages',
+]) assert.ok(privacy.includes('href="' + url + '"'), url);
 console.log('Information page checks passed');

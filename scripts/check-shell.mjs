@@ -1,27 +1,25 @@
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 
-const fontFiles = ['Newsreader-Regular.woff2', 'DMSans-Regular.woff2', 'BricolageGrotesque-Medium.woff2'];
+const fontFiles = ['Newsreader-Regular.woff2', 'DMSans-Regular.woff2', 'BricolageGrotesque-Medium.woff2', 'DMSans-Medium.ttf'];
 
 function checkPage(html, page) {
   assert.match(html, /<html[^>]*lang="en"/);
   assert.match(html, /<main[\s>]/);
   const header = html.match(/<header[\s\S]*?<\/header>/)?.[0] ?? '';
   const footer = html.match(/<footer[\s\S]*?<\/footer>/)?.[0] ?? '';
-  assert.match(footer, /href="\/autolog-site\/privacy"[^>]*>Privacy<\/a>/);
-  if (page === 'support/index.html') {
+  if (page !== 'privacy/index.html') assert.match(footer, /href="\/autolog-site\/privacy"[^>]*>Privacy<\/a>/);
+  if (page !== 'support/index.html') assert.match(footer, /href="\/autolog-site\/support"[^>]*>Support<\/a>/);
+  if (page === 'index.html') {
+    assert.match(header, /href="\/autolog-site\/support"/);
+    assert.match(header, /href="(?:\/autolog-site\/)?#setup"/);
+  } else {
     assert.match(header, /href="\/autolog-site\/"[^>]*>Home<\/a>/);
     for (const region of [header, footer]) {
       assert.equal((region.match(/<a\s/g) ?? []).length, 2);
       assert.match(region, /href="\/autolog-site\/"[^>]*>\s*<img[^>]+>\s*AutoLog<\/a>/);
     }
     assert.doesNotMatch(footer, /Your drives/);
-    assert.match(html, /url\('\/autolog-site\/fonts\/DMSans-Medium.ttf'\)/);
-  } else {
-    assert.match(header, /href="\/autolog-site\/support"/);
-    assert.match(footer, /href="\/autolog-site\/support"/);
-    if (page === 'index.html') assert.match(header, /href="(?:\/autolog-site\/)?#setup"/);
-    else assert.match(header, /href="\/autolog-site\/#the-app"/);
   }
   const shell = `${header}${footer}`;
   assert.doesNotMatch(shell, /Get the app|hello@/);
